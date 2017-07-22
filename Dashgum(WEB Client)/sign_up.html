@@ -22,7 +22,24 @@
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<![endif]-->
+
+	<!--
+		<script>
+			//If user_id box is empty that request fill up
+			function blank()
+			{
+				var du = document.user_login;
+
+				if(du.user_id.value == "")
+				{
+ 					alert("Input ID");
+        			du.user_id.focus();
+        			return false;
+				}
+			}
+			</script>
+		-->
   </head>
 
   <body>
@@ -34,7 +51,7 @@
 	  <div id="sign_up-page">
 	  	<div class="container">
 	  	
-		      <form class="form-sign_up" action="./sign_up.php" method="POST">
+		      <form name = "user_login" class="form-sign_up" action="./sign_up.php" method="POST">
 		        <h2 class="form-sign_up-heading">register id now</h2>
 		        <div class="sign_up-wrap">
 		            <input type="text" name="user_id" class="form-control" placeholder="User ID(E-mail)" autofocus>
