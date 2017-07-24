@@ -1,13 +1,13 @@
 <?php
 //회원가입, 중복체크해야함
-$dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+$dbh = new PDO('mysql:host=localhost;dbname=signup_confirm', 'root', '12345678', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
         $user_id = $_POST['user_id'];
         $user_password = $_POST['user_password'];
         //$hash_password = password_hash($user_password, PASSWORD_DEFAULT);
 
         //우선 아이디부터 검색한다.
-        $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
+        $query = "SELECT * FROM users WHERE email = :user_id";
         $sth = $dbh->prepare($query);
         $sth->bindValue(':user_id',$user_id);
         $sth->execute();
@@ -16,8 +16,10 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
         $users = $sth->fetch();
         if(isset($users[0]))
         {   
+            //echo $users['password'];
+            /*
             $hash_password = password_hash($user_password, PASSWORD_DEFAULT);
-            /* Varchar는 45 보다 커야한다 흑흑
+             Varchar는 45 보다 커야한다 흑흑
             echo $hash_password;
             var_dump(password_verify($user_password, $hash_password));
 
@@ -25,7 +27,7 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
             var_dump(password_verify($user_password, $users['User_Password']));
             //true
             */
-            if(password_verify($user_password, $users['User_Password']))
+            if(password_verify($user_password, $users['password']))
             {
                 //로그인 성공!
                 echo "Success Login!!";
