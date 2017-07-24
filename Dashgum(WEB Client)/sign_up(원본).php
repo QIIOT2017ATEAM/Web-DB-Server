@@ -1,3 +1,51 @@
+<?php
+if(isset($_POST['sign_up_btn']))
+{
+	$error = '';
+	$user_id = trim($_POST['user_id']);
+	$user_password = trim($_POST['user_password']);
+	$confirm_password = trim($_POST['confirm_password']);
+	$user_name = trim($_POST['user_name']);
+	$user_age = trim($_POST['user_age']);
+	if(empty($user_id) || empty($user_password) || empty($confirm_password) || empty($user_name) || empty($user_age))
+	{
+		$error = "<div class='text-danger'>Please fill out the form!</div>";
+	}
+	else
+	{
+		$pattren = "/^[a-zA-Z ]+$/";
+		if(preg_match($pattren, $user_id))
+		{
+
+		}
+		else
+		{
+			$error = ""
+		}
+	}
+}
+
+/*
+회원가입, 중복체크해야함
+ 기존 회원가입 코드
+$dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+
+        echo $user_id = $_POST['user_id'];
+        echo $user_password = $_POST['user_password'];
+        echo $hash_password = password_hash($user_password, PASSWORD_DEFAULT);        
+        echo $user_name = $_POST['user_name'];
+        echo $user_age = $_POST['user_age'];
+        
+        $sth = $dbh->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Age, created) VALUES (:user_id, :user_password, :user_name, :user_age, now())");
+        
+        $sth->bindValue(':user_id',$user_id);
+        $sth->bindValue(':user_password',$hash_password);
+        $sth->bindValue(':user_name',$user_name);
+        $sth->bindValue(':user_age',$user_age);
+        $sth->execute();
+*/
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,44 +70,38 @@
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<![endif]-->
+
   </head>
 
   <body>
-
+	
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
 
-	  <div id="login-page">
+	  <div id="sign_up-page">
 	  	<div class="container">
 	  	
-		      <form class="form-login" action="./login.php" method="POST">
-		        <h2 class="form-login-heading">Login ID</h2>
-		        <div class="login-wrap">
-		            <input type="text" name="user_id" class="form-control" placeholder="User ID" autofocus>
-		            <br>
+		      <form name = "user_login" class="form-sign_up" action="" method="POST">
+		        <h2 class="form-sign_up-heading">register id now</h2>
+		        <div class="sign_up-wrap">
+					<?php if(isset($error)) : echo $error; endif; ?>
+		            <input type="text" name="user_id" class="form-control" placeholder="User ID(E-mail)" autofocus>
+					<br>
 		            <input type="password" name="user_password" class="form-control" placeholder="Password">
-		            <label class="checkbox">
-		                <span class="pull-right">
-		                    <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a>
-		
-		                </span>
-					</label>
-								<!--로그인 버튼 누르는 곳 -->
-		            <button class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
-		            <hr>
-		            
-		            <div class="registration">
-		                Don't have an account yet?<br/>
-		                <a class="" href="sign_up.php">
-		                    Create an account
-		                </a>
-		            </div>
-		
+					<br>
+					<input type="password" name = "confirm_password" class="form-control" placeholder="Confirm Password">
+					<br>
+		            <input type="text" name="user_name" class="form-control" placeholder="User name">
+					<br>
+					<input type="text" name="user_age" class="form-control" placeholder="User Age">
+					<br>
+								<!--여기 아래에 회원가입 정보를 보낼 쿼리문을 넣던가, 아니면 다른 html 혹은 php 창을 만든 뒤 창을 바꿔준다. -->
+		            <button name = "sign_up_btn" class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN UP</button>
 		        </div>
 		
-		          <!-- Modal -->
+		          <!-- Modal 아래는 Forgot Password?를 누르면 나오는 창이다.-->
 		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
 		              <div class="modal-dialog">
 		                  <div class="modal-content">
