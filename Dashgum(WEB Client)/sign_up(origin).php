@@ -1,4 +1,6 @@
 <?php
+$db = new PDO('mysql:host=localhost;dbname=A-Database', 'root', '12345678', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+
 if(isset($_POST['sign_up_btn']))
 {
 	$error = '';
@@ -6,21 +8,48 @@ if(isset($_POST['sign_up_btn']))
 	$user_password = trim($_POST['user_password']);
 	$confirm_password = trim($_POST['confirm_password']);
 	$user_name = trim($_POST['user_name']);
-	$user_age = trim($_POST['user_age']);
-	if(empty($user_id) || empty($user_password) || empty($confirm_password) || empty($user_name) || empty($user_age))
+	$user_brithday = trim($_POST['user_brithday']);
+	if(empty($user_id) || empty($user_password) || empty($confirm_password) || empty($user_name) || empty($user_brithday))
 	{
 		$error = "<div class='text-danger'>Please fill out the form!</div>";
 	}
 	else
 	{
 		$pattren = "/^[a-zA-Z ]+$/";
-		if(preg_match($pattren, $user_id))
+		if(filter_var($user_id, FILTER_VALIDATE_EMAIL))
 		{
+			if(strlen($user_password) > 4 && strlen($confirm_password) > 4)
+			{
+				if($user_password == $confirm_password)
+				{
+					//echo $user_id;
+					$Check_Email = $db->prepare("SELECT User_ID FROM User_Data WHERE User_ID = :user_id");
+					$Check_Email->bindValue(':user_id',$user_id);
+					$Check_Email->execute();
 
+					if($Check_Email->rowCount() == 1)
+					{
+                    	$error = "<div class='text-danger'>Sorry, This email is already exist!</div>";
+                  	}
+					else
+					{
+						//가입성공 화면전환할것.
+						$error = "<div class='text-danger'>Create Account!</div>";
+					}
+				}
+				else
+				{
+					"<div class='text-danger'>Password is not matched!</div>";
+				}
+			}
+			else
+			{	
+				$error = "<div class='text-danger'>Your Password is too weak!</div>";
+			}
 		}
 		else
 		{
-			$error = ""
+			$error = "<div class='text-danger'>Your ID(E-mail) is invaild!</div>";
 		}
 	}
 }
@@ -87,15 +116,21 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
 		        <h2 class="form-sign_up-heading">register id now</h2>
 		        <div class="sign_up-wrap">
 					<?php if(isset($error)) : echo $error; endif; ?>
-		            <input type="text" name="user_id" class="form-control" placeholder="User ID(E-mail)" autofocus>
+		            <input type="text" name="user_id" class="form-control" placeholder="Enter ID(E-mail)..." 
+							value = "<?php if(isset($user_id)) : echo $user_id; endif;?>" autofocus>
 					<br>
-		            <input type="password" name="user_password" class="form-control" placeholder="Password">
+		            <input type="password" name="user_password" class="form-control" placeholder="Enter Password..."
+							value = "<?php if(isset($user_password)) : echo $user_password; endif;?>">
+					<b4> Password is least 4 characters in length.</b4>
 					<br>
-					<input type="password" name = "confirm_password" class="form-control" placeholder="Confirm Password">
+					<input type="password" name = "confirm_password" class="form-control" placeholder="Enter Confirm Password..."
+							value = "<?php if(isset($confirm_password)) : echo $confirm_password; endif;?>">
 					<br>
-		            <input type="text" name="user_name" class="form-control" placeholder="User name">
+		            <input type="text" name="user_name" class="form-control" placeholder="Enter Name..."
+							value = "<?php if(isset($user_name)) : echo $user_name; endif;?>">
 					<br>
-					<input type="text" name="user_age" class="form-control" placeholder="User Age">
+					<input type="text" name="user_brithday" class="form-control" placeholder="Enter Birthday..."
+							value = "<?php if(isset($user_brithday)) : echo $user_brithday; endif;?>">
 					<br>
 								<!--여기 아래에 회원가입 정보를 보낼 쿼리문을 넣던가, 아니면 다른 html 혹은 php 창을 만든 뒤 창을 바꿔준다. -->
 		            <button name = "sign_up_btn" class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN UP</button>

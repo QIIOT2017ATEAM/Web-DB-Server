@@ -8,9 +8,8 @@ if(isset($_POST['create_account'])){
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $confirm = trim($_POST['confirm']);
-    $gender = trim($_POST['gender']);
     if(empty($first_name) || empty($last_name) || empty($email) || empty($password)
-    || empty($confirm) || empty($gender)) {
+    || empty($confirm)) {
       $error = "<div class='text-danger'>Please fill out the form!</div>";
     }else{
         $pattren = "/^[a-zA-Z ]+$/";
