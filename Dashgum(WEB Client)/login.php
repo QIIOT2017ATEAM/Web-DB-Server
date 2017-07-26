@@ -1,8 +1,7 @@
-<?php session_start(); ?>
 <?php
 include 'signup_confirmation/connection/connect.php';
 
-//회원가입, 중복체크해야함
+        //회원가입, 중복체크해야함
         $user_id = $_POST['user_id'];
         $user_password = $_POST['user_password'];
         //$hash_password = password_hash($user_password, PASSWORD_DEFAULT);
