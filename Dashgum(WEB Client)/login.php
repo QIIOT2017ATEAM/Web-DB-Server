@@ -1,22 +1,22 @@
 <?php session_start(); ?>
 <?php
-//회원가입, 중복체크해야함
-$dbh = new PDO('mysql:host=localhost;dbname=A-Database', 'root', '12345678', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+include 'signup_confirmation/connection/connect.php';
 
+//회원가입, 중복체크해야함
         $user_id = $_POST['user_id'];
         $user_password = $_POST['user_password'];
         //$hash_password = password_hash($user_password, PASSWORD_DEFAULT);
 
         //우선 아이디부터 검색한다.
         $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
-        $sth = $dbh->prepare($query);
+        $sth = $db->prepare($query);
         $sth->bindValue(':user_id',$user_id);
         $sth->execute();
 
         //결과값을 배열로 가져온다.
         $users = $sth->fetch();
         if(isset($users[0]))
-        {   
+        {
             //echo $users['password'];
             /*
             $hash_password = password_hash($user_password, PASSWORD_DEFAULT);
@@ -28,7 +28,7 @@ $dbh = new PDO('mysql:host=localhost;dbname=A-Database', 'root', '12345678', arr
             var_dump(password_verify($user_password, $users['User_Password']));
             //true
             */
-            
+
             if(password_verify($user_password, $users['User_Password']))
             {
                 //로그인 성공!

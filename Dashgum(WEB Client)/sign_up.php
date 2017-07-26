@@ -1,6 +1,6 @@
 <?php
+include 'signup_confirmation/connection/connect.php';
 include 'signup_confirmation/helper/function.php';
-$db = new PDO('mysql:host=localhost;dbname=A-Database', 'root', '12345678', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 if(isset($_POST['sign_up_btn']))
 {
@@ -61,7 +61,7 @@ if(isset($_POST['sign_up_btn']))
 				}
 			}
 			else
-			{	
+			{
 				$error = "<div class='text-danger'>Your Password is too weak!</div>";
 			}
 		}
@@ -79,12 +79,12 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
 
         echo $user_id = $_POST['user_id'];
         echo $user_password = $_POST['user_password'];
-        echo $hash_password = password_hash($user_password, PASSWORD_DEFAULT);        
+        echo $hash_password = password_hash($user_password, PASSWORD_DEFAULT);
         echo $user_name = $_POST['user_name'];
         echo $user_age = $_POST['user_age'];
-        
+
         $sth = $dbh->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Age, created) VALUES (:user_id, :user_password, :user_name, :user_age, now())");
-        
+
         $sth->bindValue(':user_id',$user_id);
         $sth->bindValue(':user_password',$hash_password);
         $sth->bindValue(':user_name',$user_name);
@@ -108,7 +108,7 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <!--external css-->
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        
+
     <!-- Custom styles for this template -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
@@ -122,24 +122,24 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
   </head>
 
   <body>
-	
+
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
 
 	  <div id="sign_up-page">
 	  	<div class="container">
-	  	
+
 		      <form name = "user_login" class="form-sign_up" action="" method="POST">
-		        <h2 class="form-sign_up-heading">register id now</h2>
+		        <h2 class="form-sign_up-heading">Sign-up now</h2>
 		        <div class="sign_up-wrap">
 					<?php if(isset($error)) : echo $error; endif; ?>
-		            <input type="text" name="user_id" class="form-control" placeholder="Enter ID(E-mail)..." 
+		            <input type="text" name="user_id" class="form-control" placeholder="Enter ID(E-mail)..."
 							value = "<?php if(isset($user_id)) : echo $user_id; endif;?>" autofocus>
 					<br>
 		            <input type="password" name="user_password" class="form-control" placeholder="Enter Password..."
 							value = "<?php if(isset($user_password)) : echo $user_password; endif;?>">
-					<b4> Password is least 4 characters in length.</b4>
+					<b4> At least 5 character length</b4>
 					<br>
 					<input type="password" name = "confirm_password" class="form-control" placeholder="Enter Confirm Password..."
 							value = "<?php if(isset($confirm_password)) : echo $confirm_password; endif;?>">
@@ -147,13 +147,13 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
 		            <input type="text" name="user_name" class="form-control" placeholder="Enter Name..."
 							value = "<?php if(isset($user_name)) : echo $user_name; endif;?>">
 					<br>
-					<input type="text" name="user_birthday" class="form-control" placeholder="Enter Birthday..."
+					<input type="date" name="user_birthday" class="form-control" placeholder="Enter Birthday..."
 							value = "<?php if(isset($user_birthday)) : echo $user_birthday; endif;?>">
 					<b4> Birthday is "0000-00-00"</b4>
 								<!--여기 아래에 회원가입 정보를 보낼 쿼리문을 넣던가, 아니면 다른 html 혹은 php 창을 만든 뒤 창을 바꿔준다. -->
 		            <button name = "sign_up_btn" class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN UP</button>
 		        </div>
-		
+
 		          <!-- Modal 아래는 Forgot Password?를 누르면 나오는 창이다.-->
 		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
 		              <div class="modal-dialog">
@@ -165,7 +165,7 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
 		                      <div class="modal-body">
 		                          <p>Enter your e-mail address below to reset your password.</p>
 		                          <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
-		
+
 		                      </div>
 		                      <div class="modal-footer">
 		                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
@@ -175,9 +175,9 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
 		              </div>
 		          </div>
 		          <!-- modal -->
-		
-		      </form>	  	
-	  	
+
+		      </form>
+
 	  	</div>
 	  </div>
 
