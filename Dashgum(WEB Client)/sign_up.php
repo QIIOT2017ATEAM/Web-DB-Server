@@ -156,7 +156,9 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
 							<br>
 								<!--여기 아래에 회원가입 정보를 보낼 쿼리문을 넣던가, 아니면 다른 html 혹은 php 창을 만든 뒤 창을 바꿔준다. -->
 		            <button name = "sign_up_btn" class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN UP</button>
+								<button class="btn btn-theme btn-block" type="button" onClick="location.href='index.html';">CANCEL</button>
 		        </div>
+
 
 		          <!-- Modal 아래는 Forgot Password?를 누르면 나오는 창이다.-->
 		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
