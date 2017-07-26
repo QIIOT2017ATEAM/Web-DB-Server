@@ -1,6 +1,8 @@
 <?php
 include 'signup_confirmation/connection/connect.php';
 include 'signup_confirmation/helper/function.php';
+include 'signup_confirmation/helper/randomstring.php';
+
 
 if(isset($_POST['sign_up_btn']))
 {
@@ -35,18 +37,20 @@ if(isset($_POST['sign_up_btn']))
                   	}
 					else
 					{
+							$nonce = generateRandomString();
 						try
 						{
-							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Birthday) VALUES (:user_id, :user_password, :user_name, :user_birthday)");
+							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Birthday, nonce) VALUES (:user_id, :user_password, :user_name, :user_birthday, :nonce)");
 
 	        				$Insert_Query->bindValue(':user_id',$user_id);
     	    				$Insert_Query->bindValue(':user_password',$hash_password);
         					$Insert_Query->bindValue(':user_name',$user_name);
         					$Insert_Query->bindValue(':user_birthday',$user_birthday);
+									$Insert_Query->bindValue(':nonce',$nonce);
         					$Insert_Query->execute();
 
 							//아래 send_code는 Link가 되어야한다. 해당 부분 구현해야함.
-							send_code($code,$user_id);
+							send_code($nonce,$user_id);
 							//가입성공 화면전환할것.
 						}
 						catch(PDOException $e)
@@ -102,7 +106,7 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>DASHGUM - Bootstrap Admin Template</title>
+    <title>signup</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -149,7 +153,7 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
 					<br>
 					<input type="date" name="user_birthday" class="form-control" placeholder="Enter Birthday..."
 							value = "<?php if(isset($user_birthday)) : echo $user_birthday; endif;?>">
-					<b4> Birthday is "0000-00-00"</b4>
+							<br>
 								<!--여기 아래에 회원가입 정보를 보낼 쿼리문을 넣던가, 아니면 다른 html 혹은 php 창을 만든 뒤 창을 바꿔준다. -->
 		            <button name = "sign_up_btn" class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN UP</button>
 		        </div>

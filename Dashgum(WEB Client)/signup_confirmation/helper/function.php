@@ -1,5 +1,6 @@
 <?php
-function send_code($code,$email){
+function send_code($nonce,$user_id){
+
 require 'signup_confirmation/PHPMailer/PHPMailerAutoload.php';
 
 $mail = new PHPMailer;
@@ -15,11 +16,11 @@ $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, 
 $mail->Port = 587;                                    // TCP port to connect to
 
 $mail->setFrom('rudtn521@gmail.com', 'Ann');
-$mail->addAddress($email);
+$mail->addAddress($user_id);
 $mail->isHTML(true);                                  // Set email format to HTML
 
 $mail->Subject = 'Confirmation Code';
-$mail->Body    = "Thank you for joining us!! Your confirmation Link Is: ".$code;
+$mail->Body    = "Thank you for joining us your confirmation Code Is: ".$nonce;
 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
 if(!$mail->send()) {
