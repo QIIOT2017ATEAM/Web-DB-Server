@@ -1,8 +1,7 @@
 <?php
 include 'signup_confirmation/connection/connect.php';
-include 'signup_confirmation/helper/function.php';
+include 'signup_confirmation/helper/nonce.php';
 include 'signup_confirmation/helper/randomstring.php';
-
 
 if(isset($_POST['sign_up_btn']))
 {
@@ -46,7 +45,7 @@ if(isset($_POST['sign_up_btn']))
     	    				$Insert_Query->bindValue(':user_password',$hash_password);
         					$Insert_Query->bindValue(':user_name',$user_name);
         					$Insert_Query->bindValue(':user_birthday',$user_birthday);
-									$Insert_Query->bindValue(':nonce',$nonce);
+							$Insert_Query->bindValue(':nonce',$nonce);
         					$Insert_Query->execute();
 
 							//아래 send_code는 Link가 되어야한다. 해당 부분 구현해야함.
