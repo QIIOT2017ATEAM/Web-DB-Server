@@ -19,7 +19,7 @@ $mail->addAddress($email);
 $mail->isHTML(true);                                  // Set email format to HTML
 
 $mail->Subject = 'Confirmation Code';
-$mail->Body    = "Thank you for joining us!! Your confirmation Link Is: ".$code;
+$mail->Body    = "Thank you for joining us your confirmation Code Is: ".$code;
 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
 if(!$mail->send()) {

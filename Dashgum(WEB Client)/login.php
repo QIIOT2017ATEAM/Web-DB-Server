@@ -1,14 +1,13 @@
-<?php session_start(); ?>
 <?php
 //회원가입, 중복체크해야함
-$dbh = new PDO('mysql:host=localhost;dbname=A-Database', 'root', '12345678', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+$dbh = new PDO('mysql:host=localhost;dbname=signup_confirm', 'root', '12345678', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
         $user_id = $_POST['user_id'];
         $user_password = $_POST['user_password'];
         //$hash_password = password_hash($user_password, PASSWORD_DEFAULT);
 
         //우선 아이디부터 검색한다.
-        $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
+        $query = "SELECT * FROM users WHERE email = :user_id";
         $sth = $dbh->prepare($query);
         $sth->bindValue(':user_id',$user_id);
         $sth->execute();
@@ -28,33 +27,21 @@ $dbh = new PDO('mysql:host=localhost;dbname=A-Database', 'root', '12345678', arr
             var_dump(password_verify($user_password, $users['User_Password']));
             //true
             */
-            
-            if(password_verify($user_password, $users['User_Password']))
+            if(password_verify($user_password, $users['password']))
             {
                 //로그인 성공!
-                 echo "Success Login!!";
-                 $_SESSION['user_id'] = $user_id;
-                 ?>
-                <meta http-equiv="refresh" content="0;url=http://192.168.33.66/index.html">
-                <?php
+                echo "Success Login!!";
             }
             else
             {
                 //비번틀림
-                echo "<script>alert(\"Please check your ID or Password\");</script>";
-                ?>
-                <meta http-equiv="refresh" content="0;url=http://192.168.33.66/login.html">
-                <?php
+                echo "Login Fail!!";
             }
         }
         else
         {
-            echo "<script>alert(\"Please check your ID or Password\");</script>";
-            ?>
-            <meta http-equiv="refresh" content="0;url=http://192.168.33.66/login.html">
-            <?php
             //아이디 업슴
-            //echo "No ID";
+            echo "No ID";
         }
 
         //참조 : https://stackoverflow.com/questions/29777684/how-do-i-use-password-hashing-with-pdo-to-make-my-code-more-secure
