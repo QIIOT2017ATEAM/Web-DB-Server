@@ -23,7 +23,7 @@ $mail->isHTML(true);                                  // Set email format to HTM
 $mail->Subject = 'Confirmation Code';
 //http://www.yourwebsite.com/verify.php?email='.$email.'&hash='.$hash.'
 
-$mail->Body    = "http://192.168.33.66/verify.php?&nonce=".$nonce."";
+$mail->Body    = "http://192.168.33.66/activation.php?&nonce=".$nonce."";
 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
 if(!$mail->send()) {
