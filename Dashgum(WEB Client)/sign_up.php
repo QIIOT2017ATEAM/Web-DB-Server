@@ -50,7 +50,6 @@ if(isset($_POST['sign_up_btn']))
 
 							//아래 send_code는 Link가 되어야한다. 해당 부분 구현해야함.
 							send_code($nonce,$user_id);
-							//가입성공 화면전환할것.
 						}
 						catch(PDOException $e)
 						{
@@ -60,7 +59,7 @@ if(isset($_POST['sign_up_btn']))
 				}
 				else
 				{
-					"<div class='text-danger'>Password is not matched!</div>";
+					$error = "<div class='text-danger'>Password is not matched!</div>";
 				}
 			}
 			else

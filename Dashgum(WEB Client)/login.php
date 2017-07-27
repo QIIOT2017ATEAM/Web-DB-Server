@@ -1,7 +1,7 @@
 <?php
 include 'signup_confirmation/connection/connect.php';
 
-        //회원가입, 중복체크해야함
+        //변수를 받아온다.
         $user_id = $_POST['user_id'];
         $user_password = $_POST['user_password'];
         //$hash_password = password_hash($user_password, PASSWORD_DEFAULT);
@@ -28,29 +28,34 @@ include 'signup_confirmation/connection/connect.php';
             //true
             */
 
+            //비밀번호가 맞다면
             if(password_verify($user_password, $users['User_Password']))
             {
-                //로그인 성공!
-                 $_SESSION['user_id'] = $user_id;
-                 ?>
-                <meta http-equiv="refresh" content="0;url=http://192.168.33.66/index.html">
-                <?php
+                //status가 1이라면
+                if($users['status'] == '1')
+                {
+                    //로그인 성공!
+                    $_SESSION['user_id'] = $user_id;
+                    echo("<script>location.replace('./index.html');</script>");
+                }
+                //status가 0이라면
+                else
+                {
+                    //로그인 실패!
+                    echo("<script>location.replace('./activation_fail.php');</script>");
+                }
             }
+            //비밀번호가 틀리다면
             else
             {
-                //비번틀림
                 echo "<script>alert(\"Please check your ID or Password\");</script>";
-                ?>
-                <meta http-equiv="refresh" content="0;url=http://192.168.33.66/login.html">
-                <?php
+                echo("<script>location.replace('./login.html');</script>"); 
             }
         }
         else
         {
             echo "<script>alert(\"Please check your ID or Password\");</script>";
-            ?>
-            <meta http-equiv="refresh" content="0;url=http://192.168.33.66/login.html">
-            <?php
+            echo("<script>location.replace('./login.html');</script>");
             //아이디 업슴
             //echo "No ID";
         }
