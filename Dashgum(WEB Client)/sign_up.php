@@ -39,7 +39,7 @@ if(isset($_POST['sign_up_btn']))
 							$nonce = generateRandomString();
 						try
 						{
-							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Birthday, nonce) VALUES (:user_id, :user_password, :user_name, :user_birthday, :nonce)");
+							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Birthday, nonce, status) VALUES (:user_id, :user_password, :user_name, :user_birthday, :nonce, '0')");
 
 	        				$Insert_Query->bindValue(':user_id',$user_id);
     	    				$Insert_Query->bindValue(':user_password',$hash_password);
