@@ -1954,6 +1954,7 @@ label {
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
+
 /* 가장 위 "SIGN IN NOW 하늘색 부분 */
 .form-login h2.form-login-heading {
 	margin: 0;
@@ -1970,7 +1971,7 @@ label {
 
 /* 로그인 창의 테두리를 여유있게 띄워준다. */
 .login-wrap {
-	padding: 20px;
+	padding: 10px;
 }
 .login-wrap .registration {
 	text-align: center;

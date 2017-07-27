@@ -17,15 +17,12 @@ if(isset($users[0]))
     $status_sth = $db->prepare($status_query);
     $status_sth->bindValue(':nonce',$nonce);
     $status_sth->execute();
-    echo "Success";
 
     echo("<script>location.replace('./activation_success.html');</script>"); 
 }
 else
 {
-    echo "Fail";
-
-    echo("<script>location.replace('./activation_fail.html');</script>"); 
+    echo("<script>location.replace('./activation_fail.php');</script>"); 
 }
 
 ?>
