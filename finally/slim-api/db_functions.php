@@ -3,7 +3,7 @@
 $config['db']['host']   = "localhost";
 $config['db']['user']   = "root";
 $config['db']['pass']   = "12345678";
-$config['db']['dbname'] = "pogo";
+$config['db']['dbname'] = "A-Database";
 
 $pdo = new PDO("mysql:host=" . $config['db']['host'] . ";dbname=" . $config['db']['dbname'],
         $config['db']['user'], $config['db']['pass']);
