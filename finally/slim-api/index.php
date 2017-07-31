@@ -3,6 +3,19 @@ require 'vendor/autoload.php';
 
 $app = new \Slim\Slim();
 
+$app->config(array(
+    'debug' => true,
+    'templates.path' => '../templates'
+));
+$settingValue = $app->config('templates.path'); //returns "../templates"
+
+// Register routes
+// separate route files based on content
+$routeFiles = (array) glob('routes/*.php');
+foreach($routeFiles as $routeFile) {
+    require __DIR__ . "/" . $routeFile;
+}
+
 $app->get('/hello/:name', function ($name) {
     echo "Hello, $name";
 });
@@ -10,6 +23,19 @@ $app->get('/hello/:name', function ($name) {
 /* Android will request heart rate information, so let's do an example of selecting
 and returning json data
 */
+$app->get('/formation', function () use ($app) {
+    echo "<form method='post' action='reception?id=mike'>\n";
+    echo "<input type='text' name='foo' value='bar'>\n";
+    echo "<input type='submit'>\n";
+    echo "</form>\n";
+    exit;
+});
+
+$app->post('/reception', function () use ($app) {
+print_r($_POST);
+print_r($_GET);
+exit;
+});
 
 $app->get('/simple', function () use ($app) {
     include "db_functions.php";
@@ -126,6 +152,9 @@ $app->get('/distance/:location/:radius', function ($location, $radius) use ($app
 
 $app->post('/receive-user-data', function () use ($app) {
     $json = $app->request->getBody();
+
+    var_dump($json);
+    exit;
 
     $json_array = json_decode($json, true);
 //var_dump($json_array);
