@@ -333,8 +333,7 @@
           <section class="wrapper">
 
               <div class="row">
-                  <div class="col-lg-9 main-chart">
-                      
+                  <div class="col-lg-9 main-chart" style="width:100%">
                       <div id="googleMap" style="width:100%;height:300px;"></div>
                     <!--  
                       <div class="row mtbox">   
@@ -562,12 +561,14 @@
       <!-- **********************************************************************************************************************************************************
       RIGHT SIDEBAR CONTENT
       *********************************************************************************************************************************************************** -->                  
-                  
-                  <div class="col-lg-3 ds">
+                  <!--
+                  <div class="  ">
                     <!--COMPLETED ACTIONS DONUTS CHART-->
+                    <!--
 						<h3>NOTIFICATIONS</h3>
-                                        
+                                      
                       <!-- First Action -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
@@ -578,7 +579,9 @@
                       		</p>
                       	</div>
                       </div>
+                      
                       <!-- Second Action -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
@@ -590,6 +593,7 @@
                       	</div>
                       </div>
                       <!-- Third Action -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
@@ -601,6 +605,7 @@
                       	</div>
                       </div>
                       <!-- Fourth Action -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
@@ -612,6 +617,7 @@
                       	</div>
                       </div>
                       <!-- Fifth Action -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
@@ -624,8 +630,10 @@
                       </div>
 
                        <!-- USERS ONLINE SECTION -->
+                       <!--
 						<h3>TEAM MEMBERS</h3>
                       <!-- First Member -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<img class="img-circle" src="assets/img/ui-divya.jpg" width="35px" height="35px" align="">
@@ -637,6 +645,7 @@
                       	</div>
                       </div>
                       <!-- Second Member -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<img class="img-circle" src="assets/img/ui-sherman.jpg" width="35px" height="35px" align="">
@@ -648,6 +657,7 @@
                       	</div>
                       </div>
                       <!-- Third Member -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<img class="img-circle" src="assets/img/ui-danro.jpg" width="35px" height="35px" align="">
@@ -659,6 +669,7 @@
                       	</div>
                       </div>
                       <!-- Fourth Member -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<img class="img-circle" src="assets/img/ui-zac.jpg" width="35px" height="35px" align="">
@@ -670,6 +681,7 @@
                       	</div>
                       </div>
                       <!-- Fifth Member -->
+                      <!--
                       <div class="desc">
                       	<div class="thumb">
                       		<img class="img-circle" src="assets/img/ui-sam.jpg" width="35px" height="35px" align="">
@@ -682,6 +694,7 @@
                       </div>
 
                         <!-- CALENDAR-->
+                        <!--
                         <div id="calendar" class="mb">
                             <div class="panel green-panel no-margin">
                                 <div class="panel-body">
@@ -695,8 +708,8 @@
                             </div>
                         </div><!-- / calendar -->
                       
-                  </div><!-- /col-lg-3 -->
-              </div><! --/row -->
+                  <!--</div><!-- /col-lg-3 -->
+              <!--</div><! --/row -->
           </section>
       </section>
 
@@ -705,7 +718,7 @@
       <footer class="site-footer">
           <div class="text-center">
               2014 - Alvarez.is
-              <a href="index.html#" class="go-top">
+              <a href="index.php#" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>
           </div>
