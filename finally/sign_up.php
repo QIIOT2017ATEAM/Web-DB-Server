@@ -1,6 +1,7 @@
 <?php
 include 'signup_confirmation/connection/connect.php';
 include 'signup_confirmation/helper/nonce.php';
+//include 'slim-api/index.php';
 include 'signup_confirmation/helper/randomstring.php';
 
 if(isset($_POST['sign_up_btn']))
@@ -49,6 +50,7 @@ if(isset($_POST['sign_up_btn']))
         					$Insert_Query->execute();
 
 							//아래 send_code는 Link가 되어야한다. 해당 부분 구현해야함.
+
 							send_code($nonce,$user_id);
 						}
 						catch(PDOException $e)
@@ -153,7 +155,7 @@ $dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', 
 							value = "<?php if(isset($user_birthday)) : echo $user_birthday; endif;?>">
 							<br>
 								<!--여기 아래에 회원가입 정보를 보낼 쿼리문을 넣던가, 아니면 다른 html 혹은 php 창을 만든 뒤 창을 바꿔준다. -->
-		            <button name = "sign_up_btn" class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN UP</button>
+		            <button name = "sign_up_btn" class="btn btn-theme btn-block" href="" type="submit"><i class="fa fa-lock"></i> SIGN UP</button>
 					<button class="btn btn-theme btn-block" type="button" onClick="location.href='index.html';">CANCEL</button> 
 				</div>
 
