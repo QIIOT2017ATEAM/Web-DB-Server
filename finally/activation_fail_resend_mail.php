@@ -1,33 +1,6 @@
 <?php
     include 'signup_confirmation/connection/connect.php';
     include 'signup_confirmation/helper/nonce.php';
-
-    //email 다시 받음
-    $email = $_POST['email'];
-    echo isset($email);
-
-    //email 찾기
-    $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
-    $sth = $db->prepare($query);
-    $sth->bindValue(':user_id',$email);
-    $sth->execute();
-
-    //결과를 리스트화
-    $users = $sth->fetch();
-
-    //이메일이 있다면.
-    if(isset($users[0]))
-    {
-        $nonce = $users['nonce'];
-        send_code($nonce,$users['User_ID']);
-        echo("<script>location.replace('./activation_check_email.html');</script>"); 
-    }
-    //이메일이 없다면.
-    else
-    {
-        //echo("<script>location.replace('./activation_success.html');</script>");
-    }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,7 +11,7 @@
         <meta name="author" content="Dashboard">
         <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-            <title>Active ID Success</title>
+            <title>Resend E-mail</title>
 
         <!-- Bootstrap core CSS -->
         <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -65,13 +38,10 @@
 	  <div id="login-page">
 	  	<div class="container">
               <form class="form-login" action="./activation_fail.php" method="POST">
-		        <h2 class="form-login-heading">Error</h2>
+		        <h2 class="form-login-heading">We resend E-mail</h2>
 		        <div class="login-wrap">
                     <!--Your account could not be activated. Please check the link that was emailed.-->
-                    <h4 class="form-login-heading"style="text-align:center">Check This:</h4>
-                    <h4 class="form-login-heading"style="text-align:center">1)Account could not be activated.</h4>
-                    <h4 class="form-login-heading"style="text-align:center">Check the link that was emailed.</h4>
-                    <h4 class="form-login-heading"style="text-align:center">2)Can't Find your ID(E-mail)</h4>
+                    <h4 class="form-login-heading"style="text-align:center">Check Your E-mail</h4>
                     <br>
 								<!--로그인 버튼 누르는 곳 -->
                     <button class="btn btn-theme btn-block" type="button" onClick="location.href='index.html';">Back to Main</button>
