@@ -32,9 +32,10 @@
 
 	  <div id="login-page">
 	  	<div class="container">
-		      <form class="form-login" action="./login.php" method="POST">
+		      <form class="form-login" action="login.php" method="POST">
 		        <h2 class="form-login-heading">Login ID</h2>
 		        <div class="login-wrap">
+					<?php if(isset($error)) : echo '<span style="color:red;text-align:center;">'.$error.'</span>'; endif; ?>
 		            <input type="text" name="user_id" class="form-control" placeholder="User ID" autofocus>
 		            <br>
 		            <input type="password" name="user_password" class="form-control" placeholder="Password">

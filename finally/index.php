@@ -214,7 +214,7 @@
             </div>
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-                    <li><a class="login" href="login.html">Login</a></li>
+                    <li><a class="login" href="login.php">Login</a></li>
                     <li><a class="sign_up" href="./sign_up.php">Sign-up</a></li>
             	</ul>
             </div>

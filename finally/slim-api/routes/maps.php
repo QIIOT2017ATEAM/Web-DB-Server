@@ -91,6 +91,74 @@ if(isset($_POST['sign_up_btn']))
 });
 //PHPMailer include slim end
 
+//Login in slim
+$app->post('/login', function () use ($app) {
+    include "db_functions.php";
+    include '../signup_confirmation/connection/connect.php';
+    include '../signup_confirmation/helper/nonce.php';
+    include '../signup_confirmation/helper/randomstring.php';
+    
+    $user_id = $_POST['user_id'];
+	$user_password = $_POST['user_password'];
+
+if(isset($_POST['login_btn']))
+{
+	if(empty($user_id) || empty($user_password))
+	{
+		//$error = "<div class='text-danger'>Please fill out the form!</div>";
+        $error = "Please fill out the form!";
+        echo("<script>location.replace('../login.php?error=".$error."');</script>");
+	}
+	else
+	{
+		//First, Serch ID
+        $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
+        $sth = $db->prepare($query);
+        $sth->bindValue(':user_id',$user_id);
+        $sth->execute();
+
+        //결과값을 배열로 가져온다.
+        $users = $sth->fetch();
+        if(isset($users[0]))
+        {
+            //password right
+            if(password_verify($user_password, $users['User_Password']))
+            {
+                //status == 1\
+                if($users['status'] == '1')
+                {
+                    //login success
+                    session_start();
+                    $_SESSION['user_id'] = $user_id;
+                    $_SESSION['user_password'] = $user_password;
+                    $_SESSION['user_name'] = $users['User_Name'];
+                    echo("<script>location.replace('../index.php');</script>");
+                }
+                //status == 0
+                else
+                {
+                    //login fail
+                    echo("<script>location.replace('../activation_fail.php');</script>");
+                }
+            }
+            //password worng
+            else
+            {
+                echo "<script>alert(\"Please check your ID or Password\");</script>";
+                echo("<script>location.replace('../login.php');</script>"); 
+            }
+        }
+        else
+        {
+            //No ID;
+            echo "<script>alert(\"Please check your ID or Password\");</script>";
+            echo("<script>location.replace('../login.php');</script>");
+        }
+	}
+}	
+});
+//Login in slim end
+
 //heroes-as-json start
 $app->get('/heroes-as-json', function () use ($app) {
     include "db_functions.php";
