@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <?php
 function send_code($nonce,$user_id){
-
-require 'signup_confirmation/PHPMailer/PHPMailerAutoload.php';
-
+//require 'signup_confirmation/PHPMailer/PHPMailerAutoload.php';
 $mail = new PHPMailer;
 
 //$mail->SMTPDebug = 2;                               // Enable verbose debug output
@@ -26,11 +24,17 @@ $mail->Subject = 'Confirmation Code';
 $mail->Body    = "http://192.168.33.66/activation.php?&nonce=".$nonce."";
 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-if(!$mail->send()) {
-    echo 'Message could not be sent.';
-    echo 'Mailer Error: ' . $mail->ErrorInfo;
-} else {
-    echo 'Message has been sent';
+    if(!$mail->send()) 
+    {
+        //echo 'Message could not be sent.';
+        //echo 'Mailer Error: ' . $mail->ErrorInfo;
+        echo "<script>location.replace('../activation_fail.php');</script>";
+    } 
+    else 
+    {
+        //echo 'Message has been sent';
+        echo "<script>location.replace('../activation_check_email.html');</script>";
+    }
 }
-}
+//<meta http-equiv='refresh' content='0;url=activation_check_email.html'>
 ?>

@@ -1,5 +1,96 @@
 <?php 
 
+//PHPMailer include slim
+$app->post('/send-email', function () use ($app) {
+    include "db_functions.php";
+    include '../signup_confirmation/connection/connect.php';
+    include '../signup_confirmation/helper/nonce.php';
+    include '../signup_confirmation/helper/randomstring.php';
+    
+    $user_id = $_POST['user_id'];
+	$user_password = $_POST['user_password'];
+	$confirm_password = $_POST['confirm_password'];
+	$hash_password = password_hash($user_password, PASSWORD_DEFAULT);
+	$user_name = $_POST['user_name'];
+	$user_birthday = $_POST['user_birthday'];
+
+if(isset($_POST['sign_up_btn']))
+{
+	if(empty($user_id) || empty($user_password) || empty($confirm_password) || empty($user_name) || empty($user_birthday))
+	{
+		//$error = "<div class='text-danger'>Please fill out the form!</div>";
+
+        $error = "Please fill out the form!";
+        echo("<script>location.replace('../sign_up.php?error=".$error."');</script>");
+	}
+	else
+	{
+		$pattren = "/^[a-zA-Z ]+$/";
+		if(filter_var($user_id, FILTER_VALIDATE_EMAIL))
+		{
+			if(strlen($user_password) > 4 && strlen($confirm_password) > 4)
+			{
+				if($user_password == $confirm_password)
+				{
+					//echo $user_id;
+					$Check_Email = $db->prepare("SELECT User_ID FROM User_Data WHERE User_ID = :user_id");
+					$Check_Email->bindValue(':user_id',$user_id);
+					$Check_Email->execute();
+
+					if($Check_Email->rowCount() == 1)
+					{
+                        $error = "Sorry, This E-mail is already exist!";
+                        echo("<script>location.replace('../sign_up.php?error=".$error."');</script>");
+                  	}
+					else
+					{
+						try
+						{
+
+							//모든 조건이 만족됨. 따라서 exit; 하면됨
+							$nonce = generateRandomString();
+							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Birthday, nonce, status) VALUES (:user_id, :user_password, :user_name, :user_birthday, :nonce, '0')");
+
+	        				$Insert_Query->bindValue(':user_id',$user_id);
+    	    				$Insert_Query->bindValue(':user_password',$hash_password);
+        					$Insert_Query->bindValue(':user_name',$user_name);
+        					$Insert_Query->bindValue(':user_birthday',$user_birthday);
+							$Insert_Query->bindValue(':nonce',$nonce);
+        					$Insert_Query->execute();
+
+							//아래 send_code는 Link가 되어야한다. 해당 부분 구현해야함.
+							send_code($nonce,$user_id);
+							
+							//echo "<script>location.replace('/slim-api/send-email');</script>";
+						}
+						catch(PDOException $e)
+						{
+                      		echo "Sorry" .$e->getMessage();
+                  		}
+					}
+				}
+				else
+				{
+                    $error = "Password is not matched!";
+                    echo("<script>location.replace('../sign_up.php?error=".$error."');</script>");
+                    
+				}
+			}
+			else
+			{
+                $error = "Your Password is too weak!";
+                echo("<script>location.replace('../sign_up.php?error=".$error."');</script>");
+			}
+		}
+		else
+		{
+            $error = "Your ID(E-mail) is invaild!";
+            echo("<script>location.replace('../sign_up.php?error=".$error."');</script>");
+		}
+	}
+}	
+});
+
 $app->get('/heroes-as-json', function () use ($app) {
     include "db_functions.php";
 
