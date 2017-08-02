@@ -1,12 +1,12 @@
 <?php
 include 'signup_confirmation/connection/connect.php';
 include 'signup_confirmation/helper/nonce.php';
+//include 'slim-api/index.php';
 include 'signup_confirmation/helper/randomstring.php';
 
-$error = $_GET["error"];
-/*
 if(isset($_POST['sign_up_btn']))
 {
+	$error = '';
 	$user_id = trim($_POST['user_id']);
 	$user_password = trim($_POST['user_password']);
 	$confirm_password = trim($_POST['confirm_password']);
@@ -37,11 +37,9 @@ if(isset($_POST['sign_up_btn']))
                   	}
 					else
 					{
+							$nonce = generateRandomString();
 						try
 						{
-
-							//모든 조건이 만족됨. 따라서 exit; 하면됨
-							$nonce = generateRandomString();
 							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Birthday, nonce, status) VALUES (:user_id, :user_password, :user_name, :user_birthday, :nonce, '0')");
 
 	        				$Insert_Query->bindValue(':user_id',$user_id);
@@ -52,9 +50,8 @@ if(isset($_POST['sign_up_btn']))
         					$Insert_Query->execute();
 
 							//아래 send_code는 Link가 되어야한다. 해당 부분 구현해야함.
+
 							send_code($nonce,$user_id);
-							
-							//echo "<script>location.replace('/slim-api/send-email');</script>";
 						}
 						catch(PDOException $e)
 						{
@@ -78,6 +75,25 @@ if(isset($_POST['sign_up_btn']))
 		}
 	}
 }
+
+/*
+회원가입, 중복체크해야함
+ 기존 회원가입 코드
+$dbh = new PDO('mysql:host=localhost;dbname=opentutorials', 'root', '12345678', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+
+        echo $user_id = $_POST['user_id'];
+        echo $user_password = $_POST['user_password'];
+        echo $hash_password = password_hash($user_password, PASSWORD_DEFAULT);
+        echo $user_name = $_POST['user_name'];
+        echo $user_age = $_POST['user_age'];
+
+        $sth = $dbh->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Age, created) VALUES (:user_id, :user_password, :user_name, :user_age, now())");
+
+        $sth->bindValue(':user_id',$user_id);
+        $sth->bindValue(':user_password',$hash_password);
+        $sth->bindValue(':user_name',$user_name);
+        $sth->bindValue(':user_age',$user_age);
+        $sth->execute();
 */
 ?>
 
@@ -118,10 +134,10 @@ if(isset($_POST['sign_up_btn']))
 	  <div id="sign_up-page">
 	  	<div class="container">
 
-		      <form name = "user_login" class="form-sign_up" action = "/slim-api/send-email" method="POST">
+		      <form name = "user_login" class="form-sign_up" action="" method="POST">
 		        <h2 class="form-sign_up-heading">Sign-up now</h2>
 		        <div class="sign_up-wrap">
-					<?php if(isset($error)) : echo '<span style="color:red;text-align:center;">'.$error.'</span>'; endif; ?>
+					<?php if(isset($error)) : echo $error; endif; ?>
 		            <input type="text" name="user_id" class="form-control" placeholder="Enter ID(E-mail)..."
 							value = "<?php if(isset($user_id)) : echo $user_id; endif;?>" autofocus>
 					<br>

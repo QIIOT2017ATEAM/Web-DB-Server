@@ -1,4 +1,5 @@
 <?php 
+<<<<<<< HEAD
 //PHPMailer include slim start
 $app->post('/send-email', function () use ($app) {
     include "db_functions.php";
@@ -92,6 +93,9 @@ if(isset($_POST['sign_up_btn']))
 //PHPMailer include slim end
 
 //heroes-as-json start
+=======
+
+>>>>>>> parent of f779fa3... Merge branch 'Bae'
 $app->get('/heroes-as-json', function () use ($app) {
     include "db_functions.php";
 
