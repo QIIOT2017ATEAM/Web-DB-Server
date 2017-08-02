@@ -19,13 +19,13 @@
   <body>
     <div id="map"></div>
     <script>
-var air = (function () {
+var comics = (function () {
     var json = null;
     $.ajax({
         'async': false,
         'global': false,
         // your script that outputs json data ...
-        'url': "air-as-json",
+        'url': "heroes-as-json",
         'dataType': "json",
         'success': function (data) {
             json = data;
@@ -44,58 +44,18 @@ var air = (function () {
 
         // Construct the circle for each value in citymap.
         // Note: We scale the area of the circle based on the population.
-        for (var data in air) 
-        {
+        for (var hero in comics) {
           // Add the circle for this city to the map.
-          if(10 >= air[data].Air_One)
-          {
-            var cityCircle = new google.maps.Circle
-            (
-              {
-                strokeColor: '#FF0000',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
-                map: map,
-                center: air[data].center,
-                radius: Math.sqrt(air[data].Air_One) * 1000
-              }
-            );
-          }
-          else if(20 >= air[data].Air_One)
-          {
-            var cityCircle = new google.maps.Circle
-            (
-              {
-                strokeColor: '#0000FF',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#0000FF',
-                fillOpacity: 0.35,
-                map: map,
-                center: air[data].center,
-                radius: Math.sqrt(air[data].Air_One) * 1000
-              }
-            );
-          }
-          else if(50 >= air[data].Air_One)
-          {
-            var cityCircle = new google.maps.Circle
-            (
-              {
-                strokeColor: '#00FF00',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#00FF00',
-                fillOpacity: 0.35,
-                map: map,
-                center: air[data].center,
-                radius: Math.sqrt(air[data].Air_One) * 1000
-              }
-            );
-          }
-          
+          var cityCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: comics[hero].center,
+            radius: Math.sqrt(comics[hero].population) * 1000
+          });
         }
       }
     </script>

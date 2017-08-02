@@ -1,6 +1,11 @@
 <?php 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //PHPMailer include slim start
+=======
+
+//PHPMailer include slim
+>>>>>>> parent of d2d97f4... Merge branch 'Bae'
 $app->post('/send-email', function () use ($app) {
     include "db_functions.php";
     include '../signup_confirmation/connection/connect.php';
@@ -90,12 +95,14 @@ if(isset($_POST['sign_up_btn']))
 	}
 }	
 });
-//PHPMailer include slim end
 
+<<<<<<< HEAD
 //heroes-as-json start
 =======
 
 >>>>>>> parent of f779fa3... Merge branch 'Bae'
+=======
+>>>>>>> parent of d2d97f4... Merge branch 'Bae'
 $app->get('/heroes-as-json', function () use ($app) {
     include "db_functions.php";
 
@@ -117,7 +124,7 @@ $app->get('/heroes-as-json', function () use ($app) {
                 //$person_array[] = array($person['codename'] => array("center" => array("lat" => $person['lat'], "lng" => $person['lng']), "population" => "20000000"));
                 $person_array[$person['codename']] = array("center" => array(  "lat" => $person['lat'], 
                                                                                 "lng" => $person['lng']),
-                                                                                "population" => "10");
+                                                            "population" => "10");
             }
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(200);
@@ -130,14 +137,12 @@ $app->get('/heroes-as-json', function () use ($app) {
         return $app->response;
     }
 });
-//heroes-as-json end
 
-//air-as-json start
 $app->get('/air-as-json', function () use ($app) {
     include "db_functions.php";
 
     try {
-        $sth = $pdo->prepare('SELECT * FROM Air_Data');
+        $sth = $pdo->prepare('SELECT * FROM airdata');
         $sth->execute();
 
         $result = $sth->fetchAll();
@@ -152,9 +157,9 @@ $app->get('/air-as-json', function () use ($app) {
             $person_array = [];
             foreach ($result as $person) {
                 //$person_array[] = array($person['codename'] => array("center" => array("lat" => $person['lat'], "lng" => $person['lng']), "population" => "20000000"));
-                $person_array[$person['Air_ID']] = array("center" => array( "lat" => $person['lat'], 
-                                                                            "lng" => $person['lng']),
-                                                                            "Air_One" => $person['Air_One']);
+                $person_array[$person['Air_ID']] = array("center" => array( "population" => $person['data'], 
+                                                                            "lat" => $person['lat'], 
+                                                                             "lng" => $person['lng']));
             }
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(200);
@@ -167,7 +172,6 @@ $app->get('/air-as-json', function () use ($app) {
         return $app->response;
     }
 });
-//air-as-json start
 
 $app->get('/my-map', function () use ($app) {
     // if you want to pass variables to the template, put them in $data.

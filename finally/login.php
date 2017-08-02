@@ -1,5 +1,5 @@
 <?php
-include '/signup_confirmation/connection/connect.php';
+include 'signup_confirmation/connection/connect.php';
 
         //변수를 받아온다.
         $user_id = $_POST['user_id'];

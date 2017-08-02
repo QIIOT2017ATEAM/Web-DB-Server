@@ -17,9 +17,9 @@
         exit;
     }
     
-    //$user_id = $_SESSION['user_id'];
-    //$user_password = $_SESSION['user_password'];
-    //$user_name = $_SESSION['user_name'];
+    $user_id = $_SESSION['user_id'];
+    $user_password = $_SESSION['user_password'];
+    $user_name = $_SESSION['user_name'];
 ?>
 
 <!DOCTYPE html>
