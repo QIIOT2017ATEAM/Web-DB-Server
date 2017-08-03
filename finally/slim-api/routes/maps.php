@@ -59,7 +59,6 @@ if(isset($_POST['sign_up_btn']))
 							$Insert_Query->bindValue(':nonce',$nonce);
         					$Insert_Query->execute();
 
-							//아래 send_code는 Link가 되어야한다. 해당 부분 구현해야함.
 							send_code($nonce,$user_id);
 							
 							//echo "<script>location.replace('/slim-api/send-email');</script>";
@@ -477,3 +476,80 @@ $app->get('/super-coffee', function ($request, $response) {
 $app->get('/parse-json', function ($request, $response) {
    return $this->renderer->render($response, 'parse-json.phtml');
 });
+
+
+//Receive JSON part start>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+$app->post('/receive-data', function () use ($app) {
+    include '../signup_confirmation/connection/connect.php';
+
+    $json = $app->request->getBody();
+    $json_array = json_decode($json, true);
+
+    foreach ($json_array as $line) 
+    {
+        //echo $line['test'];
+        //$test = $line['test'];
+        $MACaddress = $line['MACaddress'];
+        $datetime = $line['datetime'];
+        $lat = $line['lat'];
+        $lng = $line['lng'];
+        $co = $line['co'];
+        $co2 = $line['co2'];
+        $so2 = $line['so2'];
+        $o3 = $line['o3'];
+        $pm25 = $line['pm25'];
+        $temperature = $line['temperature'];
+    }
+
+    $Insert_Query = $db->prepare("INSERT INTO udoo_data (MACaddress, datetime, lat, lng, co, co2, so2, o3, pm25, temperature) 
+    VALUES (:MACaddress, :datetime, :lat, :lng, :co, :co2, :so2, :o3, :pm25, :temperature)");
+
+    $Insert_Query->bindValue(':MACaddress',$MACaddress);
+    $Insert_Query->bindValue(':datetime',$datetime);
+    $Insert_Query->bindValue(':lat',$lat);
+    $Insert_Query->bindValue(':lng',$lng);
+    $Insert_Query->bindValue(':co',$co);
+    $Insert_Query->bindValue(':co2',$co2);
+    $Insert_Query->bindValue(':so2',$so2);
+    $Insert_Query->bindValue(':o3',$o3);
+    $Insert_Query->bindValue(':pm25',$pm25);
+    $Insert_Query->bindValue(':temperature',$temperature);
+    $Insert_Query->execute();
+}); 
+
+
+$app->post('/receive-user-data', function () use ($app) {
+    include "db_functions.php";
+    include '../signup_confirmation/connection/connect.php';
+    include '../signup_confirmation/helper/nonce.php';
+    include '../signup_confirmation/helper/randomstring.php';
+
+    $json = $app->request->getBody();
+    $json_array = json_decode($json, true);
+
+    foreach ($json_array as $line) 
+    {
+        $user_id = $line['user_id'];
+	    $user_password = $line['user_password'];
+	    //$confirm_password = $line['confirm_password'];
+	    $hash_password = password_hash($user_password, PASSWORD_DEFAULT);
+	    $first_name = $line['first_name'];
+        $last_name = $line['last_name'];
+	    $user_birthday = $line['user_birthday'];
+    }
+
+    $nonce = generateRandomString();
+	$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, first_name, last_name, User_Birthday, nonce, status) VALUES (:user_id, :user_password, :first_name, :last_name, :user_birthday, :nonce, '0')");
+
+	$Insert_Query->bindValue(':user_id',$user_id);
+    $Insert_Query->bindValue(':user_password',$hash_password);
+    $Insert_Query->bindValue(':first_name',$first_name);
+    $Insert_Query->bindValue(':last_name',$last_name);
+    $Insert_Query->bindValue(':user_birthday',$user_birthday);
+    $Insert_Query->bindValue(':nonce',$nonce);
+    $Insert_Query->execute();
+
+    send_code($nonce,$user_id);
+    echo $user_id;
+    echo $nonce;
+}); 
