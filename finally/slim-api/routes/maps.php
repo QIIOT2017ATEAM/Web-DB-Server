@@ -92,6 +92,41 @@ if(isset($_POST['sign_up_btn']))
 });
 //PHPMailer include slim end
 
+//PHPMailer include slim start
+$app->post('/activation_fail', function () use ($app) 
+{
+    include "db_functions.php";
+    include '../signup_confirmation/connection/connect.php';
+    include '../signup_confirmation/helper/nonce.php';
+    include '../signup_confirmation/helper/randomstring.php';
+    
+    $email = $_POST['email'];
+    
+    //email 찾기
+    $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
+    $sth = $db->prepare($query);
+    $sth->bindValue(':user_id',$email);
+    $sth->execute();
+
+    //결과를 리스트화
+    $users = $sth->fetch();
+
+    //이메일이 있다면.
+    if(isset($users[0]))
+    {
+        $nonce = $users['nonce'];
+        send_code($nonce,$users['User_ID']);
+        //echo("<script>location.replace('/activation_check_email.html');</script>");  
+    }
+    //이메일이 없다면.
+    else
+    {
+        //아무것도 없어야 한다. 그래야 error 나옴.
+        //echo("<script>location.replace('/activation_check_email.html');</script>"); 
+    }
+});
+//PHPMailer include slim end
+
 //Login in slim
 $app->post('/login', function () use ($app) {
     include "db_functions.php";
