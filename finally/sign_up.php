@@ -4,81 +4,6 @@ include 'signup_confirmation/helper/nonce.php';
 include 'signup_confirmation/helper/randomstring.php';
 
 $error = $_GET["error"];
-/*
-if(isset($_POST['sign_up_btn']))
-{
-	$user_id = trim($_POST['user_id']);
-	$user_password = trim($_POST['user_password']);
-	$confirm_password = trim($_POST['confirm_password']);
-	$hash_password = password_hash($user_password, PASSWORD_DEFAULT);
-	$user_name = trim($_POST['user_name']);
-	$user_birthday = trim($_POST['user_birthday']);
-	if(empty($user_id) || empty($user_password) || empty($confirm_password) || empty($user_name) || empty($user_birthday))
-	{
-		$error = "<div class='text-danger'>Please fill out the form!</div>";
-	}
-	else
-	{
-		$pattren = "/^[a-zA-Z ]+$/";
-		if(filter_var($user_id, FILTER_VALIDATE_EMAIL))
-		{
-			if(strlen($user_password) > 4 && strlen($confirm_password) > 4)
-			{
-				if($user_password == $confirm_password)
-				{
-					//echo $user_id;
-					$Check_Email = $db->prepare("SELECT User_ID FROM User_Data WHERE User_ID = :user_id");
-					$Check_Email->bindValue(':user_id',$user_id);
-					$Check_Email->execute();
-
-					if($Check_Email->rowCount() == 1)
-					{
-                    	$error = "<div class='text-danger'>Sorry, This E-mail is already exist!</div>";
-                  	}
-					else
-					{
-						try
-						{
-
-							//모든 조건이 만족됨. 따라서 exit; 하면됨
-							$nonce = generateRandomString();
-							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Birthday, nonce, status) VALUES (:user_id, :user_password, :user_name, :user_birthday, :nonce, '0')");
-
-	        				$Insert_Query->bindValue(':user_id',$user_id);
-    	    				$Insert_Query->bindValue(':user_password',$hash_password);
-        					$Insert_Query->bindValue(':user_name',$user_name);
-        					$Insert_Query->bindValue(':user_birthday',$user_birthday);
-							$Insert_Query->bindValue(':nonce',$nonce);
-        					$Insert_Query->execute();
-
-							//아래 send_code는 Link가 되어야한다. 해당 부분 구현해야함.
-							send_code($nonce,$user_id);
-							
-							//echo "<script>location.replace('/slim-api/send-email');</script>";
-						}
-						catch(PDOException $e)
-						{
-                      		echo "Sorry" .$e->getMessage();
-                  		}
-					}
-				}
-				else
-				{
-					$error = "<div class='text-danger'>Password is not matched!</div>";
-				}
-			}
-			else
-			{
-				$error = "<div class='text-danger'>Your Password is too weak!</div>";
-			}
-		}
-		else
-		{
-			$error = "<div class='text-danger'>Your ID(E-mail) is invaild!</div>";
-		}
-	}
-}
-*/
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +57,10 @@ if(isset($_POST['sign_up_btn']))
 					<input type="password" name = "confirm_password" class="form-control" placeholder="Enter Confirm Password..."
 							value = "<?php if(isset($confirm_password)) : echo $confirm_password; endif;?>">
 					<br>
-		            <input type="text" name="user_name" class="form-control" placeholder="Enter Name..."
+		            <input type="text" name="first_name" class="form-control" placeholder="Enter First Name..."
+							value = "<?php if(isset($user_name)) : echo $user_name; endif;?>">
+					<br>
+					<input type="text" name="last_name" class="form-control" placeholder="Enter Last Name..."
 							value = "<?php if(isset($user_name)) : echo $user_name; endif;?>">
 					<br>
 					<input type="date" name="user_birthday" class="form-control" placeholder="Enter Birthday..."

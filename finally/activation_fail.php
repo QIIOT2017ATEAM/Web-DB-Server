@@ -25,7 +25,8 @@
     //이메일이 없다면.
     else
     {
-        //echo("<script>location.replace('./activation_success.html');</script>");
+        //아무것도 없어야 한다. 그래야 error 나옴.
+        //echo("<script>location.replace('./activation_check_email.html');</script>"); 
     }
 
 ?>
@@ -74,11 +75,11 @@
                     <h4 class="form-login-heading"style="text-align:center">2)Can't Find your ID(E-mail)</h4>
                     <br>
 								<!--로그인 버튼 누르는 곳 -->
-                    <button class="btn btn-theme btn-block" type="button" onClick="location.href='index.html';">Back to Main</button>
+                    <button class="btn btn-theme btn-block" type="button" onClick="location.href='index.php';">Back to Main</button>
                     <hr>
                     <label class="checkbox">
 		                <span class="pull-right">
-		                    <a data-toggle="modal" href="login.html#myModal"> Didn't you get email?</a>
+		                    <a data-toggle="modal" href="login.php#myModal"> Didn't you get email?</a>
 
 		                </span>
 					</label>

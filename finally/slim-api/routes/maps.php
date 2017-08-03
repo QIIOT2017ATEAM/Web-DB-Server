@@ -10,12 +10,13 @@ $app->post('/send-email', function () use ($app) {
 	$user_password = $_POST['user_password'];
 	$confirm_password = $_POST['confirm_password'];
 	$hash_password = password_hash($user_password, PASSWORD_DEFAULT);
-	$user_name = $_POST['user_name'];
+	$first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
 	$user_birthday = $_POST['user_birthday'];
 
 if(isset($_POST['sign_up_btn']))
 {
-	if(empty($user_id) || empty($user_password) || empty($confirm_password) || empty($user_name) || empty($user_birthday))
+	if(empty($user_id) || empty($user_password) || empty($confirm_password) || empty($first_name) || empty($last_name) || empty($user_birthday))
 	{
 		//$error = "<div class='text-danger'>Please fill out the form!</div>";
 
@@ -48,11 +49,12 @@ if(isset($_POST['sign_up_btn']))
 
 							//모든 조건이 만족됨. 따라서 exit; 하면됨
 							$nonce = generateRandomString();
-							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, User_Name, User_Birthday, nonce, status) VALUES (:user_id, :user_password, :user_name, :user_birthday, :nonce, '0')");
+							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, first_name, last_name, User_Birthday, nonce, status) VALUES (:user_id, :user_password, :first_name, :last_name, :user_birthday, :nonce, '0')");
 
 	        				$Insert_Query->bindValue(':user_id',$user_id);
     	    				$Insert_Query->bindValue(':user_password',$hash_password);
-        					$Insert_Query->bindValue(':user_name',$user_name);
+        					$Insert_Query->bindValue(':first_name',$first_name);
+        					$Insert_Query->bindValue(':last_name',$last_name);
         					$Insert_Query->bindValue(':user_birthday',$user_birthday);
 							$Insert_Query->bindValue(':nonce',$nonce);
         					$Insert_Query->execute();
@@ -72,7 +74,6 @@ if(isset($_POST['sign_up_btn']))
 				{
                     $error = "Password is not matched!";
                     echo("<script>location.replace('../sign_up.php?error=".$error."');</script>");
-                    
 				}
 			}
 			else
@@ -90,6 +91,73 @@ if(isset($_POST['sign_up_btn']))
 }	
 });
 //PHPMailer include slim end
+
+//Login in slim
+$app->post('/login', function () use ($app) {
+    include "db_functions.php";
+    include '../signup_confirmation/connection/connect.php';
+    include '../signup_confirmation/helper/nonce.php';
+    include '../signup_confirmation/helper/randomstring.php';
+    
+    $user_id = $_POST['user_id'];
+	$user_password = $_POST['user_password'];
+
+if(isset($_POST['login_btn']))
+{
+	if(empty($user_id) || empty($user_password))
+	{
+		//$error = "<div class='text-danger'>Please fill out the form!</div>";
+        $error = "Please fill out the form!";
+        echo("<script>location.replace('../login.php?error=".$error."');</script>");
+	}
+	else
+	{
+		//First, Serch ID
+        $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
+        $sth = $db->prepare($query);
+        $sth->bindValue(':user_id',$user_id);
+        $sth->execute();
+
+        //결과값을 배열로 가져온다.
+        $users = $sth->fetch();
+        if(isset($users[0]))
+        {
+            //password right
+            if(password_verify($user_password, $users['User_Password']))
+            {
+                //status == 1\
+                if($users['status'] == '1')
+                {
+                    //login success
+                    session_start();
+                    $_SESSION['user_id'] = $user_id;
+                    $_SESSION['user_password'] = $user_password;
+                    echo("<script>location.replace('../index.php');</script>");
+                }
+                //status == 0
+                else
+                {
+                    //login fail
+                    echo("<script>location.replace('../activation_fail.php');</script>");
+                }
+            }
+            //password worng
+            else
+            {
+                echo "<script>alert(\"Please check your ID or Password\");</script>";
+                echo("<script>location.replace('../login.php');</script>"); 
+            }
+        }
+        else
+        {
+            //No ID;
+            echo "<script>alert(\"Please check your ID or Password\");</script>";
+            echo("<script>location.replace('../login.php');</script>");
+        }
+	}
+}	
+});
+//Login in slim end
 
 //heroes-as-json start
 $app->get('/heroes-as-json', function () use ($app) {

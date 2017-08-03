@@ -46,7 +46,7 @@
     <link href="assets/css/style-responsive.css" rel="stylesheet">
 
     <script src="assets/js/chart-master/Chart.js"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -214,7 +214,7 @@
             </div>
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-                    <li><a class="login" href="login.html">Login</a></li>
+                    <li><a class="login" href="login.php">Login</a></li>
                     <li><a class="sign_up" href="./sign_up.php">Sign-up</a></li>
             	</ul>
             </div>
@@ -334,7 +334,7 @@
 
               <div class="row">
                   <div class="col-lg-9 main-chart" style="width:100%">
-                      <div id="googleMap" style="width:100%;height:300px;"></div>
+                      <div id="map" style="width:100%;height:300px;"></div>
                     <!--  
                       <div class="row mtbox">   
                   		<div class="col-md-2 col-sm-2 col-md-offset-1 box0">
@@ -734,6 +734,7 @@
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/jquery.sparkline.js"></script>
+    <!--
     <script>
         function myMap() {
             var mapProp= {
@@ -744,7 +745,91 @@
     }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADtDP5eiLvszRZ96CAQkd5YYs0AFNzRfs&callback=myMap"></script>
+-->
+<script>
+var air = (function () {
+    var json = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        // your script that outputs json data ...
+        'url': "slim-api/air-as-json",
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
+    });
+    return json;
+})(); 
 
+      function initMap() {
+        // Create the map.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 7,
+          center: {lat: 33.9994, lng: -118.213},
+          mapTypeId: google.maps.MapTypeId.ROAD
+        });
+
+        // Construct the circle for each value in citymap.
+        // Note: We scale the area of the circle based on the population.
+        for (var data in air) 
+        {
+          // Add the circle for this city to the map.
+          if(10 >= air[data].Air_One)
+          {
+            var cityCircle = new google.maps.Circle
+            (
+              {
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: map,
+                center: air[data].center,
+                radius: Math.sqrt(air[data].Air_One) * 1000
+              }
+            );
+          }
+          else if(20 >= air[data].Air_One)
+          {
+            var cityCircle = new google.maps.Circle
+            (
+              {
+                strokeColor: '#0000FF',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#0000FF',
+                fillOpacity: 0.35,
+                map: map,
+                center: air[data].center,
+                radius: Math.sqrt(air[data].Air_One) * 1000
+              }
+            );
+          }
+          else if(50 >= air[data].Air_One)
+          {
+            var cityCircle = new google.maps.Circle
+            (
+              {
+                strokeColor: '#00FF00',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#00FF00',
+                fillOpacity: 0.35,
+                map: map,
+                center: air[data].center,
+                radius: Math.sqrt(air[data].Air_One) * 1000
+              }
+            );
+          }
+          
+        }
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXMKBcstoboBgrHBcho5saILTBq3PHtPQ&callback=initMap">
+    </script>
     <!--common script for all pages-->
     <script src="assets/js/common-scripts.js"></script>
     
