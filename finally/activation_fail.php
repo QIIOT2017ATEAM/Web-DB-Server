@@ -4,31 +4,6 @@
 
     //email 다시 받음
     $email = $_POST['email'];
-    echo isset($email);
-
-    //email 찾기
-    $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
-    $sth = $db->prepare($query);
-    $sth->bindValue(':user_id',$email);
-    $sth->execute();
-
-    //결과를 리스트화
-    $users = $sth->fetch();
-
-    //이메일이 있다면.
-    if(isset($users[0]))
-    {
-        $nonce = $users['nonce'];
-        send_code($nonce,$users['User_ID']);
-        echo("<script>location.replace('./activation_check_email.html');</script>"); 
-    }
-    //이메일이 없다면.
-    else
-    {
-        //아무것도 없어야 한다. 그래야 error 나옴.
-        //echo("<script>location.replace('./activation_check_email.html');</script>"); 
-    }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -65,7 +40,7 @@
 
 	  <div id="login-page">
 	  	<div class="container">
-              <form class="form-login" action="./activation_fail.php" method="POST">
+              <form class="form-login" action="/slim-api/activation_fail" method="POST">
 		        <h2 class="form-login-heading">Error</h2>
 		        <div class="login-wrap">
                     <!--Your account could not be activated. Please check the link that was emailed.-->

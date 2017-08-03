@@ -26,12 +26,14 @@ $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     if(!$mail->send()) 
     {
+        //이메일 전송 실패
         //echo 'Message could not be sent.';
         //echo 'Mailer Error: ' . $mail->ErrorInfo;
-        echo "<script>location.replace('../activation_fail.php');</script>";
+        echo "<script>location.replace('../activation_check_email_fail.html');</script>";
     } 
     else 
     {
+        //이메일 전송 성공
         //echo 'Message has been sent';
         echo "<script>location.replace('../activation_check_email.html');</script>";
     }
