@@ -33,7 +33,7 @@ if(isset($_POST['sign_up_btn']))
 				if($user_password == $confirm_password)
 				{
 					//echo $user_id;
-					$Check_Email = $db->prepare("SELECT User_ID FROM User_Data WHERE User_ID = :user_id");
+					$Check_Email = $db->prepare("SELECT user_id FROM User_Data WHERE user_id = :user_id");
 					$Check_Email->bindValue(':user_id',$user_id);
 					$Check_Email->execute();
 
@@ -49,7 +49,7 @@ if(isset($_POST['sign_up_btn']))
 
 							//모든 조건이 만족됨. 따라서 exit; 하면됨
 							$nonce = generateRandomString();
-							$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, first_name, last_name, User_Birthday, nonce, status) VALUES (:user_id, :user_password, :first_name, :last_name, :user_birthday, :nonce, '0')");
+							$Insert_Query = $db->prepare("INSERT INTO User_Data (user_id, user_password, first_name, last_name, user_birthday, nonce, status) VALUES (:user_id, :user_password, :first_name, :last_name, :user_birthday, :nonce, '0')");
 
 	        				$Insert_Query->bindValue(':user_id',$user_id);
     	    				$Insert_Query->bindValue(':user_password',$hash_password);
@@ -102,7 +102,7 @@ $app->post('/activation_fail', function () use ($app)
     $email = $_POST['email'];
     
     //email 찾기
-    $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
+    $query = "SELECT * FROM User_Data WHERE user_id = :user_id";
     $sth = $db->prepare($query);
     $sth->bindValue(':user_id',$email);
     $sth->execute();
@@ -114,7 +114,7 @@ $app->post('/activation_fail', function () use ($app)
     if(isset($users[0]))
     {
         $nonce = $users['nonce'];
-        send_code($nonce,$users['User_ID']);
+        send_code($nonce,$users['user_id']);
         //echo("<script>location.replace('/activation_check_email.html');</script>");  
     }
     //이메일이 없다면.
@@ -128,6 +128,7 @@ $app->post('/activation_fail', function () use ($app)
 
 //Login in slim
 $app->post('/login', function () use ($app) {
+    //session_destroy();
     include "db_functions.php";
     include '../signup_confirmation/connection/connect.php';
     include '../signup_confirmation/helper/nonce.php';
@@ -147,7 +148,7 @@ if(isset($_POST['login_btn']))
 	else
 	{
 		//First, Serch ID
-        $query = "SELECT * FROM User_Data WHERE User_ID = :user_id";
+        $query = "SELECT * FROM User_Data WHERE user_id = :user_id";
         $sth = $db->prepare($query);
         $sth->bindValue(':user_id',$user_id);
         $sth->execute();
@@ -157,7 +158,7 @@ if(isset($_POST['login_btn']))
         if(isset($users[0]))
         {
             //password right
-            if(password_verify($user_password, $users['User_Password']))
+            if(password_verify($user_password, $users['user_password']))
             {
                 //status == 1\
                 if($users['status'] == '1')
@@ -166,6 +167,7 @@ if(isset($_POST['login_btn']))
                     session_start();
                     $_SESSION['user_id'] = $user_id;
                     $_SESSION['user_password'] = $user_password;
+                    $_SESSION['first_name'] = $users['first_name'];
                     echo("<script>location.replace('../index.php');</script>");
                 }
                 //status == 0
@@ -202,13 +204,7 @@ $app->get('/heroes-as-json', function () use ($app) {
         $sth->execute();
 
         $result = $sth->fetchAll();
-        /*
-        var citymap = {
-        chicago: {
-          center: {lat: 41.878, lng: -87.629},
-          population: 2714856
-        },
-        */
+
         if ($result) {
             $person_array = [];
             foreach ($result as $person) {
@@ -239,13 +235,7 @@ $app->get('/air-as-json', function () use ($app) {
         $sth->execute();
 
         $result = $sth->fetchAll();
-        /*
-        var citymap = {
-        chicago: {
-          center: {lat: 41.878, lng: -87.629},
-          population: 2714856
-        },
-        */
+
         if ($result) {
             $person_array = [];
             foreach ($result as $person) {
@@ -479,7 +469,7 @@ $app->get('/parse-json', function ($request, $response) {
 
 
 //Receive JSON part start>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-$app->post('/receive-data', function () use ($app) {
+$app->post('/receive-air-data', function () use ($app) {
     include '../signup_confirmation/connection/connect.php';
 
     $json = $app->request->getBody();
@@ -489,7 +479,7 @@ $app->post('/receive-data', function () use ($app) {
     {
         //echo $line['test'];
         //$test = $line['test'];
-        $MACaddress = $line['MACaddress'];
+        $macaddress = $line['macaddress'];
         $datetime = $line['datetime'];
         $lat = $line['lat'];
         $lng = $line['lng'];
@@ -501,10 +491,10 @@ $app->post('/receive-data', function () use ($app) {
         $temperature = $line['temperature'];
     }
 
-    $Insert_Query = $db->prepare("INSERT INTO udoo_data (MACaddress, datetime, lat, lng, co, co2, so2, o3, pm25, temperature) 
-    VALUES (:MACaddress, :datetime, :lat, :lng, :co, :co2, :so2, :o3, :pm25, :temperature)");
+    $Insert_Query = $db->prepare("INSERT INTO udoo_data (macaddress, datetime, lat, lng, co, co2, so2, o3, pm25, temperature) 
+    VALUES (:macaddress, :datetime, :lat, :lng, :co, :co2, :so2, :o3, :pm25, :temperature)");
 
-    $Insert_Query->bindValue(':MACaddress',$MACaddress);
+    $Insert_Query->bindValue(':macaddress',$macaddress);
     $Insert_Query->bindValue(':datetime',$datetime);
     $Insert_Query->bindValue(':lat',$lat);
     $Insert_Query->bindValue(':lng',$lng);
@@ -517,6 +507,29 @@ $app->post('/receive-data', function () use ($app) {
     $Insert_Query->execute();
 }); 
 
+$app->post('/receive-heart-data', function () use ($app) {
+    include '../signup_confirmation/connection/connect.php';
+
+    $json = $app->request->getBody();
+    $json_array = json_decode($json, true);
+
+    foreach ($json_array as $line) 
+    {
+        $macaddress = $line['macaddress'];
+        $heartbeatvalue = $line['heartbeatvalue'];
+        $insertdate = $line['insertdate'];
+        $user_num = $line['user_num'];
+    }
+
+    $Insert_Query = $db->prepare("INSERT INTO heartbeat_data (macaddress, heartbeatvalue, insertdate, user_num) 
+    VALUES (:macaddress, :heartbeatvalue, :insertdate, :user_num)");
+
+    $Insert_Query->bindValue(':macaddress',$macaddress);
+    $Insert_Query->bindValue(':heartbeatvalue',$heartbeatvalue);
+    $Insert_Query->bindValue(':insertdate',$insertdate);
+    $Insert_Query->bindValue(':user_num',$user_num);
+    $Insert_Query->execute();
+}); 
 
 $app->post('/receive-user-data', function () use ($app) {
     include "db_functions.php";
@@ -539,7 +552,7 @@ $app->post('/receive-user-data', function () use ($app) {
     }
 
     $nonce = generateRandomString();
-	$Insert_Query = $db->prepare("INSERT INTO User_Data (User_ID, User_Password, first_name, last_name, User_Birthday, nonce, status) VALUES (:user_id, :user_password, :first_name, :last_name, :user_birthday, :nonce, '0')");
+	$Insert_Query = $db->prepare("INSERT INTO User_Data (user_id, user_password, first_name, last_name, user_birthday, nonce, status) VALUES (:user_id, :user_password, :first_name, :last_name, :user_birthday, :nonce, '0')");
 
 	$Insert_Query->bindValue(':user_id',$user_id);
     $Insert_Query->bindValue(':user_password',$hash_password);
@@ -550,40 +563,35 @@ $app->post('/receive-user-data', function () use ($app) {
     $Insert_Query->execute();
 
     send_code($nonce,$user_id);
-    echo $user_id;
-    echo $nonce;
 }); 
 
-$app->post('/receive-user-data2', function () use ($app) {
+//android login
+$app->post('/android-sign-up', function () use ($app) {
+    include "db_functions.php";
     include '../signup_confirmation/connection/connect.php';
+
+    //$user_id = $_POST['user_id'];
+	//$user_password = $_POST['user_password'];
 
     $json = $app->request->getBody();
     $json_array = json_decode($json, true);
 
     foreach ($json_array as $line) 
     {
-        //echo $line['test'];
-        //$test = $line['test'];
-        $CO = $line['CO'];
-        $O3 = $line['O3'];
-        $SO2 = $line['SO2'];
-        $PM25 = $line['PM25'];
-        $time = $line['time'];
-        $type = $line['type'];
-        $NO2 = $line['NO2'];
-
+        $user_id = $line['user_id'];
+        //$user_password = $line['user_password'];
     }
 
-    $Insert_Query = $db->prepare("INSERT INTO shtest (CO, O3, SO2, PM25, time, type, NO2) 
-    VALUES (:CO, :O3, :SO2, :PM25, :time, :type, :NO2)");
+    $Check_Email = $db->prepare("SELECT user_id FROM User_Data WHERE user_id = :user_id");
+	$Check_Email->bindValue(':user_id',$user_id);
+	$Check_Email->execute();
 
-    $Insert_Query->bindValue(':CO',$CO);
-    $Insert_Query->bindValue(':O3',$O3);
-    $Insert_Query->bindValue(':SO2',$SO2);
-    $Insert_Query->bindValue(':PM25',$PM25);
-    $Insert_Query->bindValue(':time',$time);
-    $Insert_Query->bindValue(':type',$type);
-    $Insert_Query->bindValue(':NO2',$NO2);
+    $response = false;
 
-    $Insert_Query->execute();
+    if($Check_Email->rowCount() == 1)
+	{
+        //해당 유저가 존재할 경우
+        $response = true;
+    }
+    echo json_encode($response);
 }); 

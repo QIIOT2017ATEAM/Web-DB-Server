@@ -6,22 +6,23 @@ $mail = new PHPMailer;
 
 //$mail->SMTPDebug = 2;                               // Enable verbose debug output
 
-$mail->isSMTP();                                      // Set mailer to use SMTP
+$mail->isMail();                                      // Set mailer to use SMTP
 $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 $mail->SMTPAuth = true;                               // Enable SMTP authentication
 $mail->Username = 'rudtn521@gmail.com';                 // SMTP username
 $mail->Password = 'gkdlfn~521';                           // SMTP password
-$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
 $mail->Port = 587;                                    // TCP port to connect to
 
-$mail->setFrom('rudtn521@gmail.com', 'Ann');
+$mail->Form = 'rudtn521@gmail.com';
+$mail->FormName = 'Ann';
 $mail->addAddress($user_id);
 $mail->isHTML(true);                                  // Set email format to HTML
 
 $mail->Subject = 'Confirmation Code';
 //http://www.yourwebsite.com/verify.php?email='.$email.'&hash='.$hash.'
 
-$mail->Body    = "http://192.168.33.66/activation.php?&nonce=".$nonce."";
+$mail->Body    = "http://teama-iot.calit2.net/activation.php?&nonce=".$nonce."";
 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     if(!$mail->send()) 

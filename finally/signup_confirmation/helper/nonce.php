@@ -6,15 +6,16 @@ $mail = new PHPMailer;
 
 //$mail->SMTPDebug = 2;                               // Enable verbose debug output
 
-$mail->isSMTP();                                      // Set mailer to use SMTP
+$mail->isMail();                                      // Set mailer to use SMTP
 $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 $mail->SMTPAuth = true;                               // Enable SMTP authentication
 $mail->Username = 'rudtn521@gmail.com';                 // SMTP username
 $mail->Password = 'gkdlfn~521';                           // SMTP password
-$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
 $mail->Port = 587;                                    // TCP port to connect to
 
-$mail->setFrom('rudtn521@gmail.com', 'Ann');
+$mail->Form = 'rudtn521@gmail.com';
+$mail->FormName = 'Ann';
 $mail->addAddress($user_id);
 $mail->isHTML(true);                                  // Set email format to HTML
 
@@ -26,14 +27,12 @@ $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     if(!$mail->send()) 
     {
-        //이메일 전송 실패
         //echo 'Message could not be sent.';
         //echo 'Mailer Error: ' . $mail->ErrorInfo;
-        echo "<script>location.replace('../activation_check_email_fail.html');</script>";
+        echo "<script>location.replace('../activation_send_fail_email.html');</script>";
     } 
     else 
     {
-        //이메일 전송 성공
         //echo 'Message has been sent';
         echo "<script>location.replace('../activation_check_email.html');</script>";
     }
