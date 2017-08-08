@@ -451,7 +451,7 @@ $app->get('/dynamic-chart-s1', function () use ($app) {
 });
 
 
-$app->get('/dynamic_chart_json', function () use ($app) {
+$app->get('/co_dynamic_chart_json', function () use ($app) {
   include "db_functions.php";
 
   try {
@@ -463,24 +463,16 @@ $app->get('/dynamic_chart_json', function () use ($app) {
     if ($result) {
       // build array for Column labels
       $json_array['cols'] = array(
-        array('id'=>'', 'label'=>'date/time', 'type'=>'string'),
-        array('id'=>'', 'label'=>'O2', 'type'=>'number'),
-        array('id'=>'', 'label'=>'SO2', 'type'=>'number'),
-        array('id'=>'', 'label'=>'N', 'type'=>'number'),
-        array('id'=>'', 'label'=>'Temp', 'type'=>'number'),
-        array('id'=>'', 'label'=>'s5', 'type'=>'number'),
-        array('id'=>'', 'label'=>'s6', 'type'=>'number'));
+        array('id'=>'', 'label'=>'Time', 'type'=>'string'),
+        array('id'=>'', 'label'=>'CO Value', 'type'=>'number'),
+        array('id'=>'', 'label'=>'PM25 Value', 'type'=>'number'));
 
         // loop thru the sensor data and build sensor_array
         foreach ($result as $row) {
           $sensor_array = array();
           $sensor_array[] = array('v'=>$row['datetime']);
-          $sensor_array[] = array('v'=>$row['s1']);
-          $sensor_array[] = array('v'=>$row['s2']);
-          $sensor_array[] = array('v'=>$row['s3']);
-          $sensor_array[] = array('v'=>$row['s4']);
-          $sensor_array[] = array('v'=>$row['s5']);
-          $sensor_array[] = array('v'=>$row['s6']);
+          $sensor_array[] = array('v'=>$row['co']);
+          $sensor_array[] = array('v'=>$row['pm25']);
 
           // add current sensor_array line to $rows
           $rows[] = array('c'=>$sensor_array);
@@ -623,7 +615,7 @@ $app->get('/dynamic_chart_json', function () use ($app) {
           $time = $line['time'];
           $type = $line['type'];
           $NO2 = $line['NO2'];
-
+          $temp = $line['temp'];
         }
 
         $Insert_Query = $db->prepare("INSERT INTO shtest (CO, O3, SO2, PM25, time, type, NO2)

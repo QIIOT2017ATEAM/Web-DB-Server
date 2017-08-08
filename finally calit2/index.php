@@ -118,7 +118,9 @@ else
                     <font color="#46875b"><h3>CO(Carbon Monoxide)</h3></font>
                   </div>
                   <font size="7" color="#26352b"><p id="co"></p></FONT>
+
                     <script>
+
                     var aqiboxes_ignore = false;
                     function aqiboxes(){
                       if (aqiboxes_ignore) {
@@ -151,9 +153,13 @@ else
                         $("#o3").html(comics[hero].o3);
                         $("#pm25").html(comics[hero].pm25);
                         $("#temperature").html(comics[hero].temperature);
+
                       }
 
+
+
                       setTimeout(aqiboxes, 3000);
+                      //setTimeout(initMap, 3000);
                     }
 
                     </script>
@@ -175,7 +181,7 @@ else
                     <!-- WHITE PANEL - TOP USER -->
                     <div class="white-panel pn">
                       <div class="white-header">
-                        <font color="#46875b"><h3>SO2(Oxygen Sturation)</h3></font>
+                        <font color="#46875b"><h3>SO2(Sulfur Dioxide)</h3></font>
                       </div>
                       <FONT size="7" color="#26352b"><p id="so2"></p></FONT>
 
@@ -222,15 +228,19 @@ else
                         </div><!-- /col-md-4 -->
                       </div><!-- /row -->
                     </div><!-- /col-lg-9 END SECTION MIDDLE -->
-                    <button type="button" class="btn btn-round btn-primary" style="margin-left:50px">CO</button>
-                    <button type="button" class="btn btn-round btn-success" style="margin-left:10px">NO2</button>
-                    <button type="button" class="btn btn-round btn-info" style="margin-left:10px">SO2</button>
-                    <button type="button" class="btn btn-round btn-warning" style="margin-left:10px">O3</button>
-                    <button type="button" class="btn btn-round btn-danger" style="margin-left:10px">PM2.5</button>
-                    <br></br>
-                    <div id="map" style="width:90%;height:300px;margin-left:50px"></div>
+
+                    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      ▼ Sensor location
+                      <input type="button" class="btn btn-round btn-primary" style="margin-left:10px" value="CO" onClick="location.href='index.php'" >
+                      <input type="button" class="btn btn-round btn-success" style="margin-left:10px" value="NO2">
+                      <input type="button" class="btn btn-round btn-info" style="margin-left:10px" value="SO2">
+                      <input type="button" class="btn btn-round btn-warning" style="margin-left:10px" value="O3">
+                      <input type="button" class="btn btn-round btn-danger" style="margin-left:10px" value="PM2.5">
+                    </h3>
+                    <br>
+                    <div id="map" style="width:90%;height:400px;margin-left:40px">
+                    </div>
                     <script src="comap.js"></script>
-                    <!-- <script src="no2map.js"></script> -->
 
                     </section>
 

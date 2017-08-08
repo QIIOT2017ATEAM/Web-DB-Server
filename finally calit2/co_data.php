@@ -152,147 +152,130 @@
 
     <!-- Map script -->
     <script>
-    var air =
-(function ()
-{
-  var json = null;
-  $.ajax
-  (
-    {
-      'async': false,
-      'global': false,
-      // your script that outputs json data …
-      'url': "slim-api/air-as-json",
-      'dataType': "json",
-      'success': function (data)
+      var air = (function ()
       {
-        json = data;
+        var json = null;
+        $.ajax(
+        {
+          'async': false,
+          'global': false,
+          // your script that outputs json data …
+          'url': "slim-api/air-as-json",
+          'dataType': "json",
+          'success': function (data)
+          {
+            json = data;
+          }
+        });
+      return json;
+      })();
+
+      function initMap()
+      {
+        // Create the map.
+        var map = new google.maps.Map(document.getElementById('map'),
+        {
+          zoom: 8,
+          center: {lat: 32.732346, lng: -117.196053},
+          mapTypeId: google.maps.MapTypeId.ROAD
+        });
+      // Construct the circle for each value in citymap.
+      // Note: We scale the area of the circle based on the population.
+      for (var data in air)
+      {
+        if(air[data].co <= 50)
+        {
+          var cityCircle = new google.maps.Circle(
+          {
+            strokeColor: '#00ff08',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#98f29b',
+            fillOpacity: 0.35,
+            map: map,
+            center: air[data].center,
+            radius: 5000
+          });
+        }
+        else if(air[data].co <= 100)
+        {
+          var cityCircle = new google.maps.Circle(
+          {
+            strokeColor: '#F4F122',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#F7F5A0',
+            fillOpacity: 0.35,
+            map: map,
+            center: air[data].center,
+            radius: 5000
+          });
+        }
+        else if(air[data].co <= 150)
+        {
+          var cityCircle = new google.maps.Circle(
+          {
+            strokeColor: '#ff9000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#e8c276',
+            fillOpacity: 0.35,
+            map: map,
+            center: air[data].center,
+            radius: 5000
+          });
+        }
+        else if(air[data].co <= 200)
+        {
+          var cityCircle = new google.maps.Circle(
+          {
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#dd7575',
+            fillOpacity: 0.35,
+            map: map,
+            center: air[data].center,
+            radius: 5000
+          });
+        }
+        else if(air[data].co <= 300)
+        {
+          var cityCircle = new google.maps.Circle(
+          {
+            strokeColor: '#a01088',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#ce90c4',
+            fillOpacity: 0.35,
+            map: map,
+            center: air[data].center,
+            radius: 5000
+          });
+        }
+        else if(air[data].co <= 500)
+        {
+          var cityCircle = new google.maps.Circle(
+          {
+            strokeColor: '#9b0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#a53131',
+            fillOpacity: 0.35,
+            map: map,
+            center: air[data].center,
+            radius: 5000
+          });
+        }
       }
-    }
-  );
-  return json;
-}
-)();
-function initMap()
-{
-// Create the map.
-var map = new google.maps.Map(document.getElementById('map'),
-{
-  zoom: 8,
-  center: {lat: 32.732346, lng: -117.196053},
-  mapTypeId: google.maps.MapTypeId.ROAD
-}
-);
+      }
+      </script>
+      <!-- map ajax end -->
 
-// Construct the circle for each value in citymap.
-// Note: We scale the area of the circle based on the population.
-for (var data in air)
-{
-if(air[data].co <= 50)
-{
-var cityCircle = new google.maps.Circle
-(
-{
-  strokeColor: '#00ff08',
-  strokeOpacity: 0.8,
-  strokeWeight: 2,
-  fillColor: '#98f29b',
-  fillOpacity: 0.35,
-  map: map,
-  center: air[data].center,
-  radius: 5000
-}
-);
-}
-else if(air[data].co <= 100)
-{
-var cityCircle = new google.maps.Circle
-(
-{
-  strokeColor: '#F4F122',
-  strokeOpacity: 0.8,
-  strokeWeight: 2,
-  fillColor: '#F7F5A0',
-  fillOpacity: 0.35,
-  map: map,
-  center: air[data].center,
-  radius: 5000
-}
-);
-}
-else if(air[data].co <= 150)
-{
-var cityCircle = new google.maps.Circle
-(
-{
-  strokeColor: '#ff9000',
-  strokeOpacity: 0.8,
-  strokeWeight: 2,
-  fillColor: '#e8c276',
-  fillOpacity: 0.35,
-  map: map,
-  center: air[data].center,
-  radius: 5000
-}
-);
-}
-else if(air[data].co <= 200)
-{
-var cityCircle = new google.maps.Circle
-(
-{
-  strokeColor: '#FF0000',
-  strokeOpacity: 0.8,
-  strokeWeight: 2,
-  fillColor: '#dd7575',
-  fillOpacity: 0.35,
-  map: map,
-  center: air[data].center,
-  radius: 5000
-}
-);
-}
-else if(air[data].co <= 300)
-{
-var cityCircle = new google.maps.Circle
-(
-{
-  strokeColor: '#a01088',
-  strokeOpacity: 0.8,
-  strokeWeight: 2,
-  fillColor: '#ce90c4',
-  fillOpacity: 0.35,
-  map: map,
-  center: air[data].center,
-  radius: 5000
-}
-);
-}
-else if(air[data].co <= 500)
-{
-var cityCircle = new google.maps.Circle
-(
-{
-  strokeColor: '#9b0000',
-  strokeOpacity: 0.8,
-  strokeWeight: 2,
-  fillColor: '#a53131',
-  fillOpacity: 0.35,
-  map: map,
-  center: air[data].center,
-  radius: 5000
-}
-);
-}
-
-
-}
-}
-          </script>
-          <!-- map ajax end -->
-          <script async defer
+      <script async defer
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXMKBcstoboBgrHBcho5saILTBq3PHtPQ&callback=initMap">
-          </script>
+      </script>
+
 <!-- map script end -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -303,38 +286,37 @@ google.charts.load('current', {'packages':['corechart']});  //필수
 google.charts.setOnLoadCallback(drawChart); //필수
 // Draw the chart and set the chart values
 
-function drawChart() {
-  /*
-  var data = google.visualization.arrayToDataTable([
-  ['Task', 'Co Value'],
-  ['Work', 8],
-  ['Eat', 2],
-  ['TV', 4],
-  ['Gym', 2],
-  ['Sleep', 8],
-  ['test1', 7],
-  ['test2', 10],
-  ['test3', 100]
-]);
-*/
-  var jsonData = $.ajax({
-                url: "/slim-api/chartdata-as-json?id=id",
+    var drawChart_ignore = false;
+    function drawChart() 
+    {
+      if (drawChart_ignore) 
+      {
+        return;
+      }
+      drawChart_ignore = true;
+
+      var jsonData = $.ajax({
+                //vAxis: {title:'단위 ℃',maxValue:35,minValue:15}, //vAxis는 y축에 대한 옵션이다.
+                url: "/slim-api/co_dynamic_chart_json",
                 dataType:"json",
+                complete: function() 
+                {
+                  drawChart_ignore = false;
+                },
                 async: false
                 }).responseText;
-  
-  var data = new google.visualization.DataTable(jsonData);
 
-  // Optional; add a title and set the width and height of the chart
-  var options = {/*'title':'',*/ 'width':1250, 'height':300};
+      var data = new google.visualization.DataTable(jsonData);
 
-  // Display the chart inside the <div> element with id="piechart"
-  var chart = new google.visualization.LineChart(document.getElementById('LineChart'));
-  chart.draw(data, options);
-}
-</script>
+      // Optional; add a title and set the width and height of the chart
+      var options = {/*'title':'',*/ 'width':1250, 'height':300};
 
+      // Display the chart inside the <div> element with id="piechart"
+      var chart = new google.visualization.LineChart(document.getElementById('LineChart'));
+      chart.draw(data, options);
 
-
-</body>
+      setTimeout(drawChart, 3000);
+    }
+    </script>
+  </body>
 </html>

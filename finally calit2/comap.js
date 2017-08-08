@@ -1,3 +1,4 @@
+
 var air =
 (function ()
 {
@@ -25,8 +26,8 @@ aqiboxes();
 // Create the map.
 var map = new google.maps.Map(document.getElementById('map'),
 {
-  zoom: 8,
-  center: {lat: 32.732346, lng: -117.196053},
+  zoom: 18,
+  center: {lat: 32.882407, lng: -117.234817},
   mapTypeId: google.maps.MapTypeId.ROAD
 }
 );
@@ -47,7 +48,7 @@ var cityCircle = new google.maps.Circle
   fillOpacity: 0.35,
   map: map,
   center: air[data].center,
-  radius: 5000
+  radius: 25
 }
 );
 }
@@ -63,7 +64,7 @@ var cityCircle = new google.maps.Circle
   fillOpacity: 0.35,
   map: map,
   center: air[data].center,
-  radius: 5000
+  radius: 25
 }
 );
 }
@@ -79,7 +80,7 @@ var cityCircle = new google.maps.Circle
   fillOpacity: 0.35,
   map: map,
   center: air[data].center,
-  radius: 5000
+  radius: 25
 }
 );
 }
@@ -95,7 +96,7 @@ var cityCircle = new google.maps.Circle
   fillOpacity: 0.35,
   map: map,
   center: air[data].center,
-  radius: 5000
+  radius: 25
 }
 );
 }
@@ -111,7 +112,7 @@ var cityCircle = new google.maps.Circle
   fillOpacity: 0.35,
   map: map,
   center: air[data].center,
-  radius: 5000
+  radius: 25
 }
 );
 }
@@ -127,7 +128,7 @@ var cityCircle = new google.maps.Circle
   fillOpacity: 0.35,
   map: map,
   center: air[data].center,
-  radius: 5000
+  radius: 25
 }
 );
 }
