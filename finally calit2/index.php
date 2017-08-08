@@ -86,7 +86,6 @@ else
               <li><a  href="so2_data.php">SO2</a></li>
               <li><a  href="o3_data.php">O3</a></li>
               <li><a  href="pm25_data.php">PM25</a></li>
-              <li><a  href="temperature_data.php">TEMP</a></li>
             </ul>
           </li>
           <li class="mt">
@@ -153,7 +152,6 @@ else
                         $("#o3").html(comics[hero].o3);
                         $("#pm25").html(comics[hero].pm25);
                         $("#temperature").html(comics[hero].temperature);
-
                       }
 
 
@@ -231,7 +229,7 @@ else
 
                     <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       ▼ Sensor location
-                      <input type="button" class="btn btn-round btn-primary" style="margin-left:10px" value="CO" onClick="location.href='index.php'" >
+                      <input type="button" class="btn btn-round btn-primary" style="margin-left:10px" value="CO" onClick="" >
                       <input type="button" class="btn btn-round btn-success" style="margin-left:10px" value="NO2">
                       <input type="button" class="btn btn-round btn-info" style="margin-left:10px" value="SO2">
                       <input type="button" class="btn btn-round btn-warning" style="margin-left:10px" value="O3">
@@ -239,43 +237,190 @@ else
                     </h3>
                     <br>
                     <div id="map" style="width:90%;height:400px;margin-left:40px">
-                    </div>
-                    <script src="comap.js"></script>
+                      <script>
+                      var air =
+                      (function ()
+                      {
+                        var json = null;
+                        $.ajax
+                        (
+                          {
+                            'async': false,
+                            'global': false,
+                            // your script that outputs json data …
+                            'url': "slim-api/air-as-json",
+                            'dataType': "json",
+                            'success': function (data)
+                            {
+                              json = data;
+                            }
+                          }
+                        );
+                        return json;
+                      }
+                    )();
+                    function initMap()
+                    {
+                      aqiboxes();
+                      // Create the map.
+                      var map = new google.maps.Map(document.getElementById('map'),
+                      {
+                        zoom: 18,
+                        center: {lat: 32.882407, lng: -117.234817},
+                        mapTypeId: google.maps.MapTypeId.ROAD
+                      }
+                    );
 
-                    </section>
 
-                    <!—main content end—>
-                    <!—footer start—>
-                    <footer class="site-footer">
-                      <div class="text-center">
-                        2017 - A-Team
-                        <a href="index.php#" class="go-top">
-                          <i class="fa fa-angle-up"></i>
-                        </a>
-                      </div>
-                    </footer>
-                    <!—footer end—>
-                  </section>
+                    // Construct the circle for each value in citymap.
+                    // Note: We scale the area of the circle based on the population.
+                    for (var data in air)
+                    {
 
-                  <!— js placed at the end of the document so the pages load faster —>
-                  <script src="assets/js/jquery.js"></script>
-                  <script src="assets/js/jquery-1.8.3.min.js"></script>
-                  <script src="assets/js/bootstrap.min.js"></script>
-                  <script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
-                  <script src="assets/js/jquery.scrollTo.min.js"></script>
-                  <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
-                  <script src="assets/js/jquery.sparkline.js"></script>
+                      var marker = new google.maps.Marker(
+                      {
+                        position: air[data].center,
+                        map: map,
+                        icon:'A.png'
+                      }
+                    );
 
-                  <script async defer
-                  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXMKBcstoboBgrHBcho5saILTBq3PHtPQ&callback=initMap">
+                      if(air[data].no <= 50)
+                      {
+                        var cityCircle = new google.maps.Circle
+                        (
+                          {
+                            strokeColor: '#00ff08',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: '#98f29b',
+                            fillOpacity: 0.35,
+                            map: map,
+                            center: air[data].center,
+                            radius: 25
+                          }
+                        );
+                      }
+                      else if(air[data].no2 <= 100)
+                      {
+                        var cityCircle = new google.maps.Circle
+                        (
+                          {
+                            strokeColor: '#F4F122',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: '#F7F5A0',
+                            fillOpacity: 0.35,
+                            map: map,
+                            center: air[data].center,
+                            radius: 25
+                          }
+                        );
+                      }
+                      else if(air[data].no2 <= 150)
+                      {
+                        var cityCircle = new google.maps.Circle
+                        (
+                          {
+                            strokeColor: '#ff9000',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: '#e8c276',
+                            fillOpacity: 0.35,
+                            map: map,
+                            center: air[data].center,
+                            radius: 25
+                          }
+                        );
+                      }
+                      else if(air[data].no2 <= 200)
+                      {
+                        var cityCircle = new google.maps.Circle
+                        (
+                          {
+                            strokeColor: '#FF0000',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: '#dd7575',
+                            fillOpacity: 0.35,
+                            map: map,
+                            center: air[data].center,
+                            radius: 25
+                          }
+                        );
+                      }
+                      else if(air[data].no2 <= 300)
+                      {
+                        var cityCircle = new google.maps.Circle
+                        (
+                          {
+                            strokeColor: '#a01088',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: '#ce90c4',
+                            fillOpacity: 0.35,
+                            map: map,
+                            center: air[data].center,
+                            radius: 25
+                          }
+                        );
+                      }
+                      else if(air[data].no2 <= 500)
+                      {
+                        var cityCircle = new google.maps.Circle
+                        (
+                          {
+                            strokeColor: '#9b0000',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: '#a53131',
+                            fillOpacity: 0.35,
+                            map: map,
+                            center: air[data].center,
+                            radius: 25
+                          }
+                        );
+                      }
+
+
+                    }
+                  }
+
                   </script>
-                  <!—common script for all pages—>
-                  <script src="assets/js/common-scripts.js"></script>
-                  <script type="text/javascript" src="assets/js/gritter/js/jquery.gritter.js"></script>
-                  <script type="text/javascript" src="assets/js/gritter-conf.js"></script>
+                </section>
 
-                  <!—script for this page—>
-                  <script src="assets/js/sparkline-chart.js"></script>
-                  <script src="assets/js/zabuto_calendar.js"></script>
-                </body>
-                </html>
+                <!—main content end—>
+                <!—footer start—>
+                <footer class="site-footer">
+                  <div class="text-center">
+                    2017 - A-Team
+                    <a href="index.php#" class="go-top">
+                      <i class="fa fa-angle-up"></i>
+                    </a>
+                  </div>
+                </footer>
+                <!—footer end—>
+              </section>
+
+              <!— js placed at the end of the document so the pages load faster —>
+              <script src="assets/js/jquery.js"></script>
+              <script src="assets/js/jquery-1.8.3.min.js"></script>
+              <script src="assets/js/bootstrap.min.js"></script>
+              <script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
+              <script src="assets/js/jquery.scrollTo.min.js"></script>
+              <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
+              <script src="assets/js/jquery.sparkline.js"></script>
+
+              <script async defer
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXMKBcstoboBgrHBcho5saILTBq3PHtPQ&callback=initMap">
+              </script>
+              <!—common script for all pages—>
+              <script src="assets/js/common-scripts.js"></script>
+              <script type="text/javascript" src="assets/js/gritter/js/jquery.gritter.js"></script>
+              <script type="text/javascript" src="assets/js/gritter-conf.js"></script>
+
+              <!—script for this page—>
+              <script src="assets/js/sparkline-chart.js"></script>
+              <script src="assets/js/zabuto_calendar.js"></script>
+            </body>
+            </html>

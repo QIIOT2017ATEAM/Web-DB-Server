@@ -91,7 +91,7 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-          <h3><i class="fa fa-angle-right"></i> AQI Air Data(CO)</h3>
+          <h3><i class="fa fa-angle-right"></i> AQI Air Data(NO2)</h3>
               <!-- page start-->
               <div class="tab-pane" id="chartjs">
                   <div class="row mt">
@@ -312,7 +312,7 @@ google.charts.setOnLoadCallback(drawChart);
       drawChart_ignore = true;
 
       var jsonData = $.ajax({
-                url: "/slim-api/co_dynamic_chart_json",
+                url: "/slim-api/no2_dynamic_chart_json",
                 dataType:"json",
                 complete: function() 
                 {

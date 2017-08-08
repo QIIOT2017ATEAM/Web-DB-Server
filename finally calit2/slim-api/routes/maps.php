@@ -450,12 +450,12 @@ $app->get('/dynamic-chart-s1', function () use ($app) {
   $app->render('maps_charts/dynamic-chart-s1.phtml');
 });
 
-
+//co_dynamic_chart_json start
 $app->get('/co_dynamic_chart_json', function () use ($app) {
   include "db_functions.php";
 
   try {
-    $sth = $pdo->prepare('SELECT * FROM udoo_data');
+    $sth = $pdo->prepare('SELECT * FROM udoo_data order by num limit 10');
     $sth->execute();
 
     $result = $sth->fetchAll();
@@ -464,14 +464,192 @@ $app->get('/co_dynamic_chart_json', function () use ($app) {
       // build array for Column labels
       $json_array['cols'] = array(
         array('id'=>'', 'label'=>'Time', 'type'=>'string'),
-        array('id'=>'', 'label'=>'CO Value', 'type'=>'number'),
-        array('id'=>'', 'label'=>'PM25 Value', 'type'=>'number'));
+        array('id'=>'', 'label'=>'CO Value', 'type'=>'number'));
 
         // loop thru the sensor data and build sensor_array
         foreach ($result as $row) {
           $sensor_array = array();
           $sensor_array[] = array('v'=>$row['datetime']);
           $sensor_array[] = array('v'=>$row['co']);
+
+          // add current sensor_array line to $rows
+          $rows[] = array('c'=>$sensor_array);
+        }
+
+        // add $rows to $json_array
+        $json_array['rows'] = $rows;
+
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        return $app->response->write(json_encode($json_array, JSON_NUMERIC_CHECK));
+      }
+
+      else {
+        $app->response->setStatus(404);
+      }
+    } catch (Exception $e) {
+      $app->response->setStatus(400);
+
+      return $app->response;
+    }
+  });
+  //co_dynamic_chart_json end
+
+  //no2_dynamic_chart_json start
+  $app->get('/no2_dynamic_chart_json', function () use ($app) {
+  include "db_functions.php";
+
+  try {
+    $sth = $pdo->prepare('SELECT * FROM udoo_data order by num limit 10');
+    $sth->execute();
+
+    $result = $sth->fetchAll();
+
+    if ($result) {
+      // build array for Column labels
+      $json_array['cols'] = array(
+        array('id'=>'', 'label'=>'Time', 'type'=>'string'),
+        array('id'=>'', 'label'=>'NO2 Value', 'type'=>'number'));
+
+        // loop thru the sensor data and build sensor_array
+        foreach ($result as $row) {
+          $sensor_array = array();
+          $sensor_array[] = array('v'=>$row['datetime']);
+          $sensor_array[] = array('v'=>$row['no2']);
+
+          // add current sensor_array line to $rows
+          $rows[] = array('c'=>$sensor_array);
+        }
+
+        // add $rows to $json_array
+        $json_array['rows'] = $rows;
+
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        return $app->response->write(json_encode($json_array, JSON_NUMERIC_CHECK));
+      }
+
+      else {
+        $app->response->setStatus(404);
+      }
+    } catch (Exception $e) {
+      $app->response->setStatus(400);
+
+      return $app->response;
+    }
+  });
+  //no2_dynamic_chart_json start
+
+  //so2_dynamic_chart_json start
+  $app->get('/so2_dynamic_chart_json', function () use ($app) {
+  include "db_functions.php";
+
+  try {
+    $sth = $pdo->prepare('SELECT * FROM udoo_data order by num limit 10');
+    $sth->execute();
+
+    $result = $sth->fetchAll();
+
+    if ($result) {
+      // build array for Column labels
+      $json_array['cols'] = array(
+        array('id'=>'', 'label'=>'Time', 'type'=>'string'),
+        array('id'=>'', 'label'=>'SO2 Value', 'type'=>'number'));
+
+        // loop thru the sensor data and build sensor_array
+        foreach ($result as $row) {
+          $sensor_array = array();
+          $sensor_array[] = array('v'=>$row['datetime']);
+          $sensor_array[] = array('v'=>$row['so2']);
+
+          // add current sensor_array line to $rows
+          $rows[] = array('c'=>$sensor_array);
+        }
+
+        // add $rows to $json_array
+        $json_array['rows'] = $rows;
+
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        return $app->response->write(json_encode($json_array, JSON_NUMERIC_CHECK));
+      }
+
+      else {
+        $app->response->setStatus(404);
+      }
+    } catch (Exception $e) {
+      $app->response->setStatus(400);
+
+      return $app->response;
+    }
+  });
+  //so2_dynamic_chart_json start
+
+  //o3_dynamic_chart_json start
+  $app->get('/o3_dynamic_chart_json', function () use ($app) {
+  include "db_functions.php";
+
+  try {
+    $sth = $pdo->prepare('SELECT * FROM udoo_data order by num limit 10');
+    $sth->execute();
+
+    $result = $sth->fetchAll();
+
+    if ($result) {
+      // build array for Column labels
+      $json_array['cols'] = array(
+        array('id'=>'', 'label'=>'Time', 'type'=>'string'),
+        array('id'=>'', 'label'=>'O3 Value', 'type'=>'number'));
+
+        // loop thru the sensor data and build sensor_array
+        foreach ($result as $row) {
+          $sensor_array = array();
+          $sensor_array[] = array('v'=>$row['datetime']);
+          $sensor_array[] = array('v'=>$row['o3']);
+
+          // add current sensor_array line to $rows
+          $rows[] = array('c'=>$sensor_array);
+        }
+
+        // add $rows to $json_array
+        $json_array['rows'] = $rows;
+
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        return $app->response->write(json_encode($json_array, JSON_NUMERIC_CHECK));
+      }
+
+      else {
+        $app->response->setStatus(404);
+      }
+    } catch (Exception $e) {
+      $app->response->setStatus(400);
+
+      return $app->response;
+    }
+  });
+  //o3_dynamic_chart_json start
+
+  //pm25_dynamic_chart_json start
+  $app->get('/pm25_dynamic_chart_json', function () use ($app) {
+  include "db_functions.php";
+
+  try {
+    $sth = $pdo->prepare('SELECT * FROM udoo_data order by num limit 10');
+    $sth->execute();
+
+    $result = $sth->fetchAll();
+
+    if ($result) {
+      // build array for Column labels
+      $json_array['cols'] = array(
+        array('id'=>'', 'label'=>'Time', 'type'=>'string'),
+        array('id'=>'', 'label'=>'PM25 Value', 'type'=>'number'));
+
+        // loop thru the sensor data and build sensor_array
+        foreach ($result as $row) {
+          $sensor_array = array();
+          $sensor_array[] = array('v'=>$row['datetime']);
           $sensor_array[] = array('v'=>$row['pm25']);
 
           // add current sensor_array line to $rows
@@ -495,6 +673,53 @@ $app->get('/co_dynamic_chart_json', function () use ($app) {
       return $app->response;
     }
   });
+  //pm25_dynamic_chart_json start
+
+  //temp_dynamic_chart_json start
+  $app->get('/temp_dynamic_chart_json', function () use ($app) {
+  include "db_functions.php";
+
+  try {
+    $sth = $pdo->prepare('SELECT * FROM udoo_data order by num limit 10');
+    $sth->execute();
+
+    $result = $sth->fetchAll();
+
+    if ($result) {
+      // build array for Column labels
+      $json_array['cols'] = array(
+        array('id'=>'', 'label'=>'Time', 'type'=>'string'),
+        array('id'=>'', 'label'=>'TEMP Value', 'type'=>'number'));
+
+        // loop thru the sensor data and build sensor_array
+        foreach ($result as $row) {
+          $sensor_array = array();
+          $sensor_array[] = array('v'=>$row['datetime']);
+          $sensor_array[] = array('v'=>$row['temp']);
+
+          // add current sensor_array line to $rows
+          $rows[] = array('c'=>$sensor_array);
+        }
+
+        // add $rows to $json_array
+        $json_array['rows'] = $rows;
+
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        return $app->response->write(json_encode($json_array, JSON_NUMERIC_CHECK));
+      }
+
+      else {
+        $app->response->setStatus(404);
+      }
+    } catch (Exception $e) {
+      $app->response->setStatus(400);
+
+      return $app->response;
+    }
+  });
+  //temp_dynamic_chart_json start
+
 
   $app->get('/dynamic_chart_separated_json', function () use ($app) {
     include "db_functions.php";
