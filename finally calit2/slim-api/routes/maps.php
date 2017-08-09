@@ -675,12 +675,12 @@ $app->get('/co_dynamic_chart_json', function () use ($app) {
   });
   //pm25_dynamic_chart_json start
 
-  //temp_dynamic_chart_json start
-  $app->get('/temp_dynamic_chart_json', function () use ($app) {
+  //heart_dynamic_chart_json start
+  $app->get('/heart_dynamic_chart_json', function () use ($app) {
   include "db_functions.php";
 
   try {
-    $sth = $pdo->prepare('SELECT * FROM udoo_data order by num limit 10');
+    $sth = $pdo->prepare('SELECT * FROM heartbeat_data order by num limit 10');
     $sth->execute();
 
     $result = $sth->fetchAll();
@@ -689,13 +689,13 @@ $app->get('/co_dynamic_chart_json', function () use ($app) {
       // build array for Column labels
       $json_array['cols'] = array(
         array('id'=>'', 'label'=>'Time', 'type'=>'string'),
-        array('id'=>'', 'label'=>'TEMP Value', 'type'=>'number'));
+        array('id'=>'', 'label'=>'Heartbeat', 'type'=>'number'));
 
         // loop thru the sensor data and build sensor_array
         foreach ($result as $row) {
           $sensor_array = array();
-          $sensor_array[] = array('v'=>$row['datetime']);
-          $sensor_array[] = array('v'=>$row['temp']);
+          $sensor_array[] = array('v'=>$row['insertdate']);
+          $sensor_array[] = array('v'=>$row['heartbeatvalue']);
 
           // add current sensor_array line to $rows
           $rows[] = array('c'=>$sensor_array);
@@ -718,7 +718,7 @@ $app->get('/co_dynamic_chart_json', function () use ($app) {
       return $app->response;
     }
   });
-  //temp_dynamic_chart_json start
+  //heart_dynamic_chart_json end
 
 
   $app->get('/dynamic_chart_separated_json', function () use ($app) {

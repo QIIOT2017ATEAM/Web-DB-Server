@@ -110,19 +110,19 @@
               <!-- page start-->
               <div class="tab-pane" id="chartjs">
                   <div class="row mt">
-                      <div class="col-lg-6">
+                      <div class="col-lg-4">
                           <div class="content-panel">
                           <p style="text-align: center;">
-                            <img src="heart2.gif" alt="heart GIF" style="width:400px;height:400px;">
+                            <img src="heart2.gif" alt="heart GIF" style="width:200px;height:200px;">
                             </p>
                           </div>
                       </div>
 
-                      <div class="col-lg-6">
+                      <div class="col-lg-8">
                           <div class="content-panel">
                             <h4><i class="fa fa-angle-right"></i> Heartbeat Value</h4>
-                            <font size=7><br>
-                            <P id="heartbeatvalue" style="width:400px;height:225px;text-align:center"></P>
+                            <font size=12><br>
+                            <P id="heartbeatvalue" style="width:800px;height:25px;text-align:center"></P>
                             <br>
                             </font>
                           </div>
@@ -171,6 +171,14 @@
                       </div>
 
                   </div>
+                  <div class="row mt">
+                      <div class="col-lg-12">
+                          <div class="content-panel">
+                              <h4><i class="fa fa-angle-right"></i> Chart</h4>
+                              <div id="LineChart" style="width:100%;height:100%;"></div>
+                          </div>
+                      </div>
+                   </div>
                 </div>
               <!-- page end-->
           </section>
@@ -206,5 +214,68 @@
     <!--script for this page-->
     <script src="assets/js/chart-master/Chart.js"></script>
     <script src="assets/js/chartjs-conf.js"></script>
+
+    <!--chart script start-->
+    <!-- chart script start -->
+<script type="text/javascript">
+// Load google charts
+google.charts.load("visualization", "1", {packages:["corechart"]});
+google.charts.setOnLoadCallback(drawChart);
+
+//google.charts.load('current', {'packages':['corechart']});  //필수
+//google.charts.setOnLoadCallback(drawChart); //필수
+// Draw the chart and set the chart values
+
+    var drawChart_ignore = false;
+    function drawChart() 
+    {
+      if (drawChart_ignore) 
+      {
+        return;
+      }
+      drawChart_ignore = true;
+
+      var jsonData = $.ajax({
+                url: "/slim-api/heart_dynamic_chart_json",
+                dataType:"json",
+                complete: function() 
+                {
+                  drawChart_ignore = false;
+                },
+                async: false
+                }).responseText;
+
+      var data = new google.visualization.DataTable(jsonData);
+
+      // Optional; add a title and set the width and height of the chart
+      var options = 
+      {
+        vAxis: 
+              {
+                viewWindowMode: 'explicit',
+                viewWindow: 
+                {
+                  max: 200,
+                  min: 20,
+                },
+              },
+        curveType: 'function',
+        pointsVisible: true,
+        //'width':1250, 
+        'height':300
+      };
+
+      // Display the chart inside the <div> element with id="piechart"
+      var chart = new google.visualization.LineChart(document.getElementById('LineChart'));
+      chart.draw(data, options);
+      setTimeout(drawChart, 3000);
+    }
+
+    $(window).resize(function(){
+      drawChart();
+    });
+
+    </script>
+    <!-- chart script end -->
 </body>
 </html>

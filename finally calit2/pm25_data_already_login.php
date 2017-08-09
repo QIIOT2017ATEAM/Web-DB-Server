@@ -3,12 +3,12 @@ session_start();
 if(!isset($_SESSION['user_id']) || !isset($_SESSION['user_password']) || !isset($_SESSION['first_name']))
 {
   //로그인이 되어있지 않다면 아래를 실행한다.
-  //echo "<meta http-equiv='refresh' content='0;url=index.php'>";
+  echo "<meta http-equiv='refresh' content='0;url=pm25_data.php'>";
 }
 else
 {
   //로그인이 되어 있을경우
-  echo "<meta http-equiv='refresh' content='0;url=pm25_data_already_login.php'>";
+  //echo "<meta http-equiv='refresh' content='0;url=pm25_data_already_login.php'>";
 }
 ?>
 <!DOCTYPE html>
@@ -54,8 +54,7 @@ else
             </div>
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-                    <li><a class="login" href="login.php">Login</a></li>
-                    <li><a class="sign_up" href="sign_up.php">Sign-up</a></li>
+                    <li><a class="login" href="logout.php">Logout</a></li>
             	</ul>
             </div>
         </header>
@@ -91,6 +90,16 @@ else
                 <i class="fa fa-history"></i>
                   <span>Historical</span>
               </a>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;" >
+              <i class=" fa fa-heartbeat"></i>
+              <span>Heart</span>
+            </a>
+            <ul class="sub">
+              <li><a  href="heart_data.php">RealTime</a></li>
+              <li><a  href="heart_historical_data.php">Historical</a></li>
+            </ul>
           </li>
               </ul>
               <!-- sidebar menu end-->

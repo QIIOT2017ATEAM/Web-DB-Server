@@ -4,6 +4,7 @@ include 'signup_confirmation/helper/nonce.php';
 include 'signup_confirmation/helper/randomstring.php';
 
 $error = $_GET["error"];
+
 ?>
 
 <!DOCTYPE html>
@@ -49,13 +50,12 @@ $error = $_GET["error"];
 		            <input type="password" name="user_password" class="form-control" placeholder="Password">
 		            <label class="checkbox">
 		                <span class="pull-right">
-		                    <a data-toggle="modal" href="login.php#myModal"> Forgot Password?</a>
-
+		                    <a data-toggle="modal" href="login.php#myModal">forgot password?</a>
 		                </span>
 					</label>
 								<!--로그인 버튼 누르는 곳 -->
-		            <button name = "login_btn" class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN IN</button> 
-                	<button class="btn btn-theme btn-block" type="button" onClick="location.href='index.php';">CANCEL</button> 
+		            <button name = "login_btn" class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
+                	<button class="btn btn-theme btn-block" type="button" onClick="location.href='index.php';">CANCEL</button>
 		            <hr>
 
 		            <div class="registration">

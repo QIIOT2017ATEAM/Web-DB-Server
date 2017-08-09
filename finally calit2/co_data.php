@@ -1,3 +1,16 @@
+<?php
+session_start();
+if(!isset($_SESSION['user_id']) || !isset($_SESSION['user_password']) || !isset($_SESSION['first_name']))
+{
+  //로그인이 되어있지 않다면 아래를 실행한다.
+  //echo "<meta http-equiv='refresh' content='0;url=index.php'>";
+}
+else
+{
+  //로그인이 되어 있을경우
+  echo "<meta http-equiv='refresh' content='0;url=co_data_already_login.php'>";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
